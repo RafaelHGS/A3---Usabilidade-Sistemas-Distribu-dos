@@ -12,7 +12,7 @@ export class HomePage {
 
   async presentAlertPromptAdicionar(){
     const alert = await this.alertController.create({
-      header: "Comando1",
+      header: "Adicionar tarefa",
       inputs: [
         {
           name: "nome1",
