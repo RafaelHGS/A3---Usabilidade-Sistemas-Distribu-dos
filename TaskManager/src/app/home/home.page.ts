@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-home',
@@ -7,6 +8,34 @@ import { Component } from '@angular/core';
 })
 export class HomePage {
 
-  constructor() {}
+  constructor(private alertController: AlertController) {}
 
+  async presentAlertPromptAdicionar(){
+    const alert = await this.alertController.create({
+      header: "Comando1",
+      inputs: [
+        {
+          name: "nome1",
+          type: "text",
+          placeholder: "Placeholder"
+        }  
+      ],
+      buttons: [
+        {
+          text: "cancelar",
+          role: "cancel",
+          cssClass: "secondary",
+          handler: () => {
+            console.log("Confirm Cancel");
+          }
+        }, {
+          text: "Ok",
+          handler: () => {
+            console.log("Confirm Ok");
+          }
+        }
+      ]
+    })
+    await alert.present();
+  }
 }
