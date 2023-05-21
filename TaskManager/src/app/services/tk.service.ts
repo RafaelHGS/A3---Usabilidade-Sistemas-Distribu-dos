@@ -6,18 +6,23 @@ import { Injectable } from '@angular/core';
 
 export class TkService {
 
-  private tarefa: Tarefa[] = [];
+  private tarefas: Tarefa[] = [];
 
   constructor() {
 
    }
 
    public getTarefa() : Tarefa[]{
-    return this.tarefa;
+    return this.tarefas;
    }
 
-   public adicionarTarefa(){}
-   
+
+   public adicionarTarefa(value: string, date: string){
+    date = date.replace("-", "/");
+    let tarefa : Tarefa = {value: value, date: new Date(date), done: false};
+    this.tarefas.push(tarefa);
+    console.log(this.tarefas);
+   }
 
    public limparTarefa(){}
 

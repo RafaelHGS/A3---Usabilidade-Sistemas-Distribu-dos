@@ -7,9 +7,26 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
+
+  <ion-list>
+    <ng-container *ngFor="let tarefa of tkService.getTarefa(); let i = index">
+      <ion-item-sliding>
+        <ion-item>
+          <ion-label>{{ tarefa?.value }}</ion-label>
+          <ion-checkbox slot="start" [(ngModel)]="tarefa.done"></ion-checkbox>
+          <ion-badge color="warning" *ngIf="tarefa.date.getDate()">
+            {{tarefa.date.getDate()}}/{{tarefa.date.getMonth()}}/{{tarefa.date.getDay()}}
+          </ion-badge>
+        </ion-item>
+
+      </ion-item-sliding>
+    </ng-container>
+  </ion-list>
+
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
     <ion-fab-button (click)="presentAlertPromptAdicionar()">
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
   </ion-fab>
+
 </ion-content>
