@@ -26,6 +26,7 @@
   text-decoration: none;
 }
 
+
 ion-fab-button::part(native) {
   background-color: #004f42;
   border-radius: 15px;
@@ -36,8 +37,9 @@ ion-fab-button::part(native) {
 ion-toolbar {
   --background: #1e9483;
   --color: white;
-
+  
 }
+
 
 .trash-icon-color{
   background-color: #fcbd5f;

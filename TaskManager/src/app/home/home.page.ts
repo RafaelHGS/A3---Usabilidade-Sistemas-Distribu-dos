@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { AlertController, ToastController } from '@ionic/angular';
 import { TkService } from '../services/tk.service';
+import { PopoverComponent } from '../popover/popover.component';
+import { PopoverController } from '@ionic/angular';
 
 @Component({
   selector: 'app-home',
@@ -14,7 +16,8 @@ export class HomePage {
 
   constructor(private alertController: AlertController,
               public tkService: TkService,
-              public toastController: ToastController) {}
+              public toastController: ToastController,
+              private popoverController: PopoverController) {}
 
   async presentAlertPromptAdicionar(){
     const alert = await this.alertController.create({
@@ -58,7 +61,7 @@ export class HomePage {
   async presentAlertPromptLimpar(index : number){
     const alert = await this.alertController.create({
       header: "Limpar Tarefa!",
-      message: 'Kaboom ? Yes, Rico Kaboom',
+      message: 'Deseja Excluir essa tarefa ?',
       buttons: [
         {
           text: "cancelar",
@@ -124,5 +127,13 @@ export class HomePage {
     });
     toast.present();
   }
-}
 
+  async presentPopover(ev: any){
+    const popover = await this.popoverController.create({
+      component: PopoverComponent,
+      event: ev,
+      translucent: true
+    });
+    return await popover.present();
+  }
+}
