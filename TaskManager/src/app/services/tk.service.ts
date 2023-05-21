@@ -24,9 +24,17 @@ export class TkService {
     console.log(this.tarefas);
    }
 
-   public limparTarefa(){}
+   public limparTarefa(index: number){
+    this.tarefas.splice(index, 1);
+   }
 
-   public atualizarTarefa(){}
+   public atualizarTarefa(index: number, value: string, date: string){
+    let tarefa: Tarefa = this.tarefas[index];
+    date = date.replace("-", "/");
+    tarefa.value = value;
+    tarefa.date = new Date(date);
+    this.tarefas.splice(index, 1, tarefa);
+   }
 
 
 }

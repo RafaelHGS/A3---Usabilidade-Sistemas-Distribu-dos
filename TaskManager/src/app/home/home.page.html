@@ -9,21 +9,60 @@
 <ion-content [fullscreen]="true">
 
 
-  <ion-list>
+  <ion-segment [(ngModel)]="type">
+    <ion-segment-button value="pendente" layout="ion-start">
+      <ion-label>
+        <ion-icon name="alert-circle"></ion-icon>
+        Pendentes
+      </ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="concluida" layout="ion-start">
+      <ion-label>
+        <ion-icon name="checkmark-circle"></ion-icon>
+        Concluídas
+      </ion-label>
+    </ion-segment-button>
+  </ion-segment>
+
+
+  <ion-list *ngIf="type == 'pendente'">
     <ng-container *ngFor="let tarefa of tkService.getTarefa(); let i = index">
       <ion-item-sliding>
-        <ion-item>
+        <ion-item *ngIf="!tarefa.done">
           <ion-label>{{ tarefa?.value }}</ion-label>
           <ion-checkbox slot="start" [(ngModel)]="tarefa.done"></ion-checkbox>
           <ion-badge color="warning" *ngIf="tarefa.date.getDate()">
-            {{tarefa.date.getDate()}}/{{tarefa.date.getMonth()}}/{{tarefa.date.getDay()}}
+            {{tarefa.date.getDate()}}/{{tarefa.date.getMonth()+1}}/{{tarefa.date.getFullYear()}}
           </ion-badge>
         </ion-item>
         <ion-item-options side="end">
-          <ion-item-option class="create-icon-color">
+          <ion-item-option class="create-icon-color" (click)="presentAlertPromptAtualizar(i, tarefa)">
             <ion-icon name="create-outline" slot="icon-only" color="#1e9483"></ion-icon>
           </ion-item-option>
-          <ion-item-option class="trash-icon-color">
+          <ion-item-option class="trash-icon-color" (click)="presentAlertPromptLimpar(i)">
+            <ion-icon name="trash-outline" slot="icon-only" color="red"></ion-icon>
+          </ion-item-option>
+        </ion-item-options>
+      </ion-item-sliding>
+    </ng-container>
+  </ion-list>
+
+
+  <ion-list *ngIf="type == 'concluida'">
+    <ng-container *ngFor="let tarefa of tkService.getTarefa(); let i = index">
+      <ion-item-sliding>
+        <ion-item *ngIf="tarefa.done">
+          <ion-label>{{ tarefa?.value }}</ion-label>
+          <ion-checkbox slot="start" [(ngModel)]="tarefa.done"></ion-checkbox>
+          <ion-badge color="warning" *ngIf="tarefa.date.getDate()">
+            {{tarefa.date.getDate()}}/{{tarefa.date.getMonth()+1}}/{{tarefa.date.getFullYear()}}
+          </ion-badge>
+        </ion-item>
+        <ion-item-options side="end">
+          <ion-item-option class="create-icon-color" (click)="presentAlertPromptAtualizar(i, tarefa)">
+            <ion-icon name="create-outline" slot="icon-only" color="#1e9483"></ion-icon>
+          </ion-item-option>
+          <ion-item-option class="trash-icon-color" (click)="presentAlertPromptLimpar(i)">
             <ion-icon name="trash-outline" slot="icon-only" color="red"></ion-icon>
           </ion-item-option>
         </ion-item-options>
