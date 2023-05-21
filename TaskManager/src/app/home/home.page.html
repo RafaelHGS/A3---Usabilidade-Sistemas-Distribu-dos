@@ -8,6 +8,7 @@
 
 <ion-content [fullscreen]="true">
 
+
   <ion-list>
     <ng-container *ngFor="let tarefa of tkService.getTarefa(); let i = index">
       <ion-item-sliding>
@@ -18,10 +19,18 @@
             {{tarefa.date.getDate()}}/{{tarefa.date.getMonth()}}/{{tarefa.date.getDay()}}
           </ion-badge>
         </ion-item>
-
+        <ion-item-options side="end">
+          <ion-item-option class="create-icon-color">
+            <ion-icon name="create-outline" slot="icon-only" color="#1e9483"></ion-icon>
+          </ion-item-option>
+          <ion-item-option class="trash-icon-color">
+            <ion-icon name="trash-outline" slot="icon-only" color="red"></ion-icon>
+          </ion-item-option>
+        </ion-item-options>
       </ion-item-sliding>
     </ng-container>
   </ion-list>
+
 
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
     <ion-fab-button (click)="presentAlertPromptAdicionar()">
