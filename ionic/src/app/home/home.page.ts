@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
-import { AlertController, ToastController } from '@ionic/angular';
+import { AlertController, ToastController, PopoverController } from '@ionic/angular';
 import { TkService } from '../services/tk.service';
 import { PopoverComponent } from '../popover/popover.component';
-import { PopoverController } from '@ionic/angular';
 
 @Component({
   selector: 'app-home',
