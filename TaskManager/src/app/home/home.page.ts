@@ -18,6 +18,10 @@ export class HomePage {
               public tkService: TkService,
               public toastController: ToastController,
               public popoverController : PopoverController) {}
+  
+  ngOnInit(){
+    this.tkService.getTarefaFromStorage();
+  }
 
   async presentAlertPromptAdicionar(){
     const alert = await this.alertController.create({
@@ -128,12 +132,8 @@ export class HomePage {
     toast.present();
   }
 
-  // async presentPopover(ev: any){
-  //   const popover = await this.popoverController.create({
-  //     component: PopoverComponent,
-  //     event: ev,
-  //     translucent: true
-  //   });
-  //   return await popover.present();
-  // }
+  onCheckboxChange() {
+    this.tkService.setTarefaToStorage();
+  }
+
 }

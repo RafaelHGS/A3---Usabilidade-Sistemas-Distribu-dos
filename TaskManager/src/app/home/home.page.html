@@ -45,8 +45,9 @@
 			<ion-item-sliding>
 				<ion-item *ngIf="!tarefa.done">
 					<ion-label>{{ tarefa?.value }}</ion-label>
-					<ion-checkbox slot="start" [(ngModel)]="tarefa.done"></ion-checkbox>
-					<ion-badge class="ion-badge-color" *ngIf="tarefa.date.getDate()">
+					<ion-checkbox slot="start" [(ngModel)]="tarefa.done"
+						(ionChange)="onCheckboxChange()"></ion-checkbox>
+					<ion-badge class=" ion-badge-color" *ngIf="tarefa.date.getDate()">
 						{{tarefa.date.getDate()}}/{{tarefa.date.getMonth()+1}}/{{tarefa.date.getFullYear()}}
 					</ion-badge>
 				</ion-item>
@@ -68,8 +69,9 @@
 			<ion-item-sliding>
 				<ion-item *ngIf="tarefa.done">
 					<ion-label>{{ tarefa?.value }}</ion-label>
-					<ion-checkbox slot="start" [(ngModel)]="tarefa.done"></ion-checkbox>
-					<ion-badge class="ion-badge-color" *ngIf="tarefa.date.getDate()">
+					<ion-checkbox slot="start" [(ngModel)]="tarefa.done"
+						(ionChange)="onCheckboxChange()"></ion-checkbox>
+					<ion-badge class=" ion-badge-color" *ngIf="tarefa.date.getDate()">
 						{{tarefa.date.getDate()}}/{{tarefa.date.getMonth()+1}}/{{tarefa.date.getFullYear()}}
 					</ion-badge>
 				</ion-item>
