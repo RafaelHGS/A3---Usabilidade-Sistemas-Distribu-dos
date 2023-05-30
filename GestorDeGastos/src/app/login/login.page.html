@@ -1,0 +1,24 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      Gestor de Gastos - Login
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-content id="login-page-style">
+    <ion-list id="login-forms">
+      <ion-item>
+        <ion-label position="floating">Email</ion-label>
+        <ion-input type="text" [(ngModel)]="loginData.email"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Password</ion-label>
+        <ion-input type="password" [(ngModel)]="loginData.password"></ion-input>
+      </ion-item>
+    </ion-list>
+    <ion-button class="login-page-buttons" (click)="login()">Entrar</ion-button>
+    <ion-button class="login-page-buttons" routerLink="/signup">Cadastrar</ion-button>
+  </ion-content>
+</ion-content>

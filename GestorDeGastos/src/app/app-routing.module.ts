@@ -8,17 +8,22 @@ const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: 'home',
+    redirectTo: 'login',
     pathMatch: 'full'
   },
   {
-    path: 'login-page',
-    loadChildren: () => import('./login-page/login-page.module').then( m => m.LoginPagePageModule)
+    path: 'login',
+    loadChildren: () => import('./login/login.module').then( m => m.LoginPageModule)
   },
   {
-    path: 'profile-page',
-    loadChildren: () => import('./profile-page/profile-page.module').then( m => m.ProfilePagePageModule)
+    path: 'signup',
+    loadChildren: () => import('./signup/signup.module').then( m => m.SignupPageModule)
+  },  {
+    path: 'profile',
+    loadChildren: () => import('./profile/profile.module').then( m => m.ProfilePageModule)
   },
+
+
 ];
 
 @NgModule({

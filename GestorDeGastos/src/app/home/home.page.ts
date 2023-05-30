@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { AlertController, ToastController, PopoverController } from '@ionic/angular';
 import { TkService } from '../services/tk.service';
+import { Router } from '@angular/router';
 
 
 
@@ -17,10 +18,17 @@ export class HomePage {
   constructor(private alertController: AlertController,
               public tkService: TkService,
               public toastController: ToastController,
-              public popoverController : PopoverController) {}
+              public popoverController : PopoverController, 
+              public router: Router) {}
   
   ngOnInit(){
     this.tkService.getGastoGanhoFromStorage();
+  }
+
+
+  logout(){
+    this.popoverController.dismiss();
+    this.router.navigate(["login"])
   }
 
   async presentAlertPromptAdicionar(){

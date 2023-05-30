@@ -1,20 +1,22 @@
 import { Injectable } from '@angular/core';
 import { Preferences } from '@capacitor/preferences';
 
-// import { Plugins } from '@capacitor/core/types/global';
-// const { Storage } = Plugins;
-
 @Injectable({
   providedIn: 'root'
 })
 
 export class TkService {
 
+  private clientId : Number = 0;
   private gastoGanhos: GastoGanho[] = [];
   private Saldo : Number = 0;
 
   constructor() {
 
+   }
+
+   public setClientId(clientId : Number){
+    return this.clientId = clientId;
    }
 
    public getSaldo(): Number{
@@ -86,7 +88,19 @@ export class TkService {
   public confereValor(valor : Number) : boolean{
     return Number(valor) >=0 ;
   }
+
   
+  //Test GET 
+  // async test(){
+  //   const response = axios.get("http://localhost:8080/loggedUser/Rafinhaa");
+  //   // response.constructor.name;
+  //   console.log("Resposta GETuser");
+  //   console.log((await response).data);
+
+  // }
+
+
+
 }
 
 

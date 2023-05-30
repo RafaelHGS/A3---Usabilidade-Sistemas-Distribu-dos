@@ -7,8 +7,12 @@
 					<ng-template>
 						<ion-list>
 							<ion-item>
+								<ion-icon name="person"></ion-icon>
+								<ion-label>- Perfil</ion-label>
+							</ion-item>
+							<ion-item>
 								<ion-icon name="log-out-outline"></ion-icon>
-								<ion-label>Log-out</ion-label>
+								<ion-label (click)="logout()">- Log-out</ion-label>
 							</ion-item>
 						</ion-list>
 					</ng-template>
