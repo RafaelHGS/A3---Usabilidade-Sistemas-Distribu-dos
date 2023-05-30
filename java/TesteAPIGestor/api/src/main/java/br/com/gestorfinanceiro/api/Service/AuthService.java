@@ -15,10 +15,15 @@ public class AuthService {
 	private SystemMessage message;
 	@Autowired
 	private ClientRepo clientRepo;
+	//<<<<<<<HEAD
+	//=======
 
 	public ResponseEntity<?> signup(Client obj) {
-		if (obj.getEmail().equals("")) {
-			message.setMessage("Preencha um nome de usuário");
+		if (obj.getName().equals("") || obj.getName() == null) {
+			message.setMessage("Preencha um nome");
+			return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+		} else if (obj.getEmail().equals("")) {
+			message.setMessage("Preencha um nome de email");
 			return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
 		} else if (obj.getPassword().equals("") || obj.getPassword() == null) {
 			message.setMessage("A senha não pode ser vazia, preencha uma senha");
@@ -31,11 +36,8 @@ public class AuthService {
 			message.setMessage("Cadastro Realizado com Sucesso");
 			return new ResponseEntity<>(message, HttpStatus.CREATED);
 		}
-
 	}
 
-
-<<<<<<< HEAD
 	public ResponseEntity<?> login(Client obj) {
 		Client storedClient = clientRepo.findByEmail(obj.getEmail());
 		if (storedClient == null || !storedClient.getPassword().equals(obj.getPassword())) {
@@ -45,47 +47,6 @@ public class AuthService {
 			message.setMessage("Usuário Logado com sucesso");
 			return new ResponseEntity<>(message, HttpStatus.OK);
 		}
-=======
-    public ResponseEntity<?> signup(Client obj){ 
-        if(obj.getName().equals("") || obj.getName() == null){
-            message.setMessage("Preencha um nome");
-            return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
-        }
-        else if(obj.getEmail().equals("")){
-            message.setMessage("Preencha um nome de email");
-            return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
-        }
-        else if(obj.getPassword().equals("") || obj.getPassword() == null){
-            message.setMessage("A senha não pode ser vazia, preencha uma senha");
-            return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
-        }else if (clientRepo.findByEmail(obj.getEmail()) != null) {
-            message.setMessage("Usuário já existe");
-            return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
-        }
-        else{
-            clientRepo.save(obj);
-            message.setMessage("Cadastro Realizado com Sucesso");
-            return new ResponseEntity<>(message, HttpStatus.CREATED);
-        }
-
-    }
-
-
-    public ResponseEntity<?> login(Client obj){
-        Client storedClient = clientRepo.findByEmail(obj.getEmail());
-        if (storedClient == null || !storedClient.getPassword().equals(obj.getPassword())) {
-            message.setMessage("Usuário/Senha Incorretos");
-            return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
-        }
-        else{
-            message.setMessage("Usuário Logado com sucesso");
-            return new ResponseEntity<>(message, HttpStatus.OK);
-        }
-        
-    }
->>>>>>> 63d50c4aeb27fd4763b3a11177f0ff14e2d81fe7
-
 	}
-
-
+//>>>>>>>63d 50 c4aeb27fd4763b3a11177f0ff14e2d81fe7
 }

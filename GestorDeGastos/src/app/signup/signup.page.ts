@@ -10,8 +10,7 @@ import axios from 'axios';
 })
 export class SignupPage {
 
-  constructor(public router: Router,
-    public toastController: ToastController) { }
+  constructor(public router: Router, public toastController: ToastController) { }
 
   private _errorMessage: String = '';
 

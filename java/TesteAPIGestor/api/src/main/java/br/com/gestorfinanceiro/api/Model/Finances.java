@@ -9,13 +9,14 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = " financas")
+@Table(name = "financas")
 @Getter
 @Setter
 public class Finances {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+
 	private String financeName;
 	private int financeValue;
 	private Long clientId;
