@@ -31,6 +31,11 @@ export class HomePage {
     this.router.navigate(["login"])
   }
 
+  profile(){
+    this.popoverController.dismiss();
+    this.router.navigate(["profile"])
+  }
+
   async presentAlertPromptAdicionar(){
     const alert = await this.alertController.create({
       header: "Novo Gasto/Ganho",

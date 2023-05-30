@@ -5,7 +5,7 @@ ion-toolbar {
   }
 
 
-#login-page-style {
+#signup-page-style {
     justify-content: center;
     text-align: center;
     display: flex;
@@ -14,14 +14,14 @@ ion-toolbar {
 }
 
 
-#login-page-style ion-list{
+#singup-page-style ion-list{
     border-radius: 5%;
     margin-top: 200px;
     margin-left: 50px;
     margin-right: 50px;
 }
 
-.login-page-buttons{
+.singup-page-buttons{
     --background: #2bb19d;
     margin: 10px 25%;
     display: flex;

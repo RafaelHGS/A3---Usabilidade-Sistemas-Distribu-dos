@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import axios from 'axios';
-import { TkService } from '../services/tk.service';
 import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
+import { ProfileService } from '../services/profile.service';
 
 @Component({
   selector: 'app-login',
@@ -11,7 +11,7 @@ import { ToastController } from '@ionic/angular';
 })
 export class LoginPage implements OnInit {
 
-  constructor(public tkService: TkService,
+  constructor(public profileService: ProfileService,
               public router: Router,
               public toastController : ToastController) { }
 
@@ -19,7 +19,6 @@ export class LoginPage implements OnInit {
   }
 
   loginData = {
-    nome: '',
     email: '',
     password: ''
   };
@@ -28,8 +27,8 @@ export class LoginPage implements OnInit {
   async login() {
     try {
       const response = await axios.post('http://localhost:8080/auth/login', this.loginData);
-      const email = response.data.email;
-      this.tkService.setClientId(email);
+      this.profileService.setEmail(this.loginData.email);
+      this.profileService.setProfile();
       this.router.navigate(["home"])
     } catch (error : any) {
 
