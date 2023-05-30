@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import axios from 'axios';
 import { TkService } from '../services/tk.service';
 import { Router } from '@angular/router';
+import { ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-login',
@@ -11,7 +12,8 @@ import { Router } from '@angular/router';
 export class LoginPage implements OnInit {
 
   constructor(public tkService: TkService,
-              public router: Router) { }
+              public router: Router,
+              public toastController : ToastController) { }
 
   ngOnInit() {
   }
@@ -30,11 +32,21 @@ export class LoginPage implements OnInit {
       this.tkService.setClientId(email);
       this.router.navigate(["home"])
     } catch (error : any) {
-      console.error(error);
-      console.log(error.response.data)
-      // Trate o erro do servidor
+
+      const aux = error.response.data.message;
+      this.presentToast(aux);
     }
   }
+
+
+  async presentToast(msg : String){
+    const toast = await this.toastController.create({
+      message: String(msg),
+      duration: 2500
+    });
+    toast.present();
+  }
+
 
 }
 
