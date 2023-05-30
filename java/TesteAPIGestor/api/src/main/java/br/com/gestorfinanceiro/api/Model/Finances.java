@@ -13,12 +13,10 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Finances {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String financeName;
-    private int financeValue;
-    private Long clientId;
-    
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	private String financeName;
+	private int financeValue;
+	private Long clientId;
 }

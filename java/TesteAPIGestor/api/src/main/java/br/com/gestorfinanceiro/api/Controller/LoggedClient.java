@@ -15,36 +15,29 @@ import br.com.gestorfinanceiro.api.Model.Client;
 import br.com.gestorfinanceiro.api.Repo.ClientRepo;
 import br.com.gestorfinanceiro.api.Service.LoggedService;
 
-
 @RestController
 @RequestMapping("/loggedUser")
 @CrossOrigin(origins = "*")
 public class LoggedClient {
-    
-    @Autowired
-    private ClientRepo clientRepo;
+	@Autowired
+	private ClientRepo clientRepo;
 
-    @Autowired
-    private LoggedService loggedService;
+	@Autowired
+	private LoggedService loggedService;
 
+	//Get Cliente pelo email
+	@GetMapping("/{email}")
+	public ResponseEntity<?> userData(@PathVariable String email) {
+		return loggedService.userData(clientRepo.findByEmail(email));
+	}
 
-    //Get Cliente pelo email
-    @GetMapping("/{email}")
-    public ResponseEntity<?> userData(@PathVariable String email){
-        return loggedService.userData(clientRepo.findByEmail(email));
-    }
+	@PutMapping("/editUser")
+	public Client edit(@RequestBody Client client) {
+		return clientRepo.save(client);
+	}
 
-
-    @PutMapping("/editUser")
-    public Client edit(@RequestBody Client client){
-        return clientRepo.save(client);
-    }
-
-
-    @DeleteMapping("/delUser/{id}")
-    public void delete(@PathVariable Long id){
-        clientRepo.deleteById(id);
-    }
-
-
+	@DeleteMapping("/delUser/{id}")
+	public void delete(@PathVariable Long id) {
+		clientRepo.deleteById(id);
+	}
 }

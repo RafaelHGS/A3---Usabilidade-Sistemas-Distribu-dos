@@ -16,52 +16,43 @@ import br.com.gestorfinanceiro.api.Model.Client;
 import br.com.gestorfinanceiro.api.Repo.ClientRepo;
 import br.com.gestorfinanceiro.api.Service.AuthService;
 
-
 @RestController
 @RequestMapping("/auth")
 @CrossOrigin(origins = "*")
 public class AuthClient {
-    
-    @Autowired
-    private ClientRepo repoAction;
-    
-    @Autowired
-    private AuthService authService;
+	@Autowired
+	private ClientRepo repoAction;
 
+	@Autowired
+	private AuthService authService;
 
-    @PostMapping("/signup")
-    public ResponseEntity<?> signUp(@RequestBody Client client){
-        return authService.signup(client);
-    }
+	@PostMapping("/signup")
+	public ResponseEntity<?> signUp(@RequestBody Client client) {
+		return authService.signup(client);
+	}
 
+	@PostMapping("/login")
+	public ResponseEntity<?> login(@RequestBody Client client) {
+		return authService.login(client);
+	}
 
-    @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody Client client) {
-        return authService.login(client);
-    }
+	// @GetMapping("/")
+	// public Iterable<Client> select(){
+	//     return repoAction.findAll();
+	// }
 
+	@GetMapping("/{email}")
+	public Client findUsername(@PathVariable String email) {
+		return repoAction.findByEmail(email);
+	}
 
-    // @GetMapping("/")
-    // public Iterable<Client> select(){
-    //     return repoAction.findAll();
-    // }
+	@PutMapping("/puuuuut")
+	public Client edit(@RequestBody Client client) {
+		return repoAction.save(client);
+	}
 
-    @GetMapping("/{email}")
-    public Client findUsername(@PathVariable String email){
-        return repoAction.findByEmail(email);
-    }
-
-
-    @PutMapping("/puuuuut")
-    public Client edit(@RequestBody Client client){
-        return repoAction.save(client);
-    }
-
-
-    @DeleteMapping("/aroba/{id}")
-    public void delete(@PathVariable Long id){
-        repoAction.findById(id);
-    }
-
-
+	@DeleteMapping("/aroba/{id}")
+	public void delete(@PathVariable Long id) {
+		repoAction.findById(id);
+	}
 }
