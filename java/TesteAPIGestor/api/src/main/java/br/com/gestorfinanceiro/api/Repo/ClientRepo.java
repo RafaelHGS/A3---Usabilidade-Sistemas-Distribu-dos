@@ -6,10 +6,8 @@ import org.springframework.stereotype.Repository;
 import br.com.gestorfinanceiro.api.Model.Client;
 
 @Repository
-public interface ClientRepo extends CrudRepository<Client, Long>{
-    Client findByEmail(String email);
+public interface ClientRepo extends CrudRepository<Client, Long> {
+	Client findByEmail(String email);
 
-    Client findById(int Id);
-
-
+	Client findById(int Id);
 }

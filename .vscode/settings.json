@@ -12,6 +12,19 @@
 			"database": "server_list",
 			"username": "root",
 			"connectionTimeout": 30
+		},
+		{
+			"mysqlOptions": {
+				"authProtocol": "xprotocol"
+			},
+			"previewLimit": 50,
+			"server": "localhost",
+			"port": 33060,
+			"driver": "MySQL",
+			"name": "gestor_api",
+			"database": "gestor_api",
+			"username": "root",
+			"connectionTimeout": 30
 		}
 	]
 }

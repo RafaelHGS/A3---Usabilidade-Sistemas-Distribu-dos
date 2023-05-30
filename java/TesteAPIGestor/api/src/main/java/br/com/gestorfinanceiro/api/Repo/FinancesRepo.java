@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 import br.com.gestorfinanceiro.api.Model.Finances;
 
 @Repository
-public interface FinancesRepo extends CrudRepository<Finances, Long>{
-    List<FinancesRepo> findByClientId(Integer clientId);
+public interface FinancesRepo extends CrudRepository<Finances, Long> {
+	List<FinancesRepo> findByClientId(Integer clientId);
 }
