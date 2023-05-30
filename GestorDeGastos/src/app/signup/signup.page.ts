@@ -37,20 +37,20 @@ export class SignupPage {
       console.log(response.data); // Exemplo de resposta bem-sucedida
       this.router.navigate(["login"])
     } catch (error : any) {
-      this.setErrorMessage(error.response.data);
-      this.presentToast();
-      
+      const aux = error.response.data.message;
+      this.presentToast(aux);
     }
   }
 
-  async presentToast(){
+  async presentToast(msg : String){
     const toast = await this.toastController.create({
-      message: String(this.getErrorMessage()),
-      duration: 2500
+    message: String(msg),
+    duration: 2500
     });
     toast.present();
-  }
+    }
 }
+
 
 
 

@@ -20,11 +20,16 @@ public class AuthService {
     private ClientRepo clientRepo;
 
 
-    public ResponseEntity<?> signup(Client obj){
-        if(obj.getEmail().equals("")){
-            message.setMessage("Preencha um nome de usuário");
+    public ResponseEntity<?> signup(Client obj){ 
+        if(obj.getName().equals("") || obj.getName() == null){
+            message.setMessage("Preencha um nome");
             return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
-        }else if(obj.getPassword().equals("") || obj.getPassword() == null){
+        }
+        else if(obj.getEmail().equals("")){
+            message.setMessage("Preencha um nome de email");
+            return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+        }
+        else if(obj.getPassword().equals("") || obj.getPassword() == null){
             message.setMessage("A senha não pode ser vazia, preencha uma senha");
             return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
         }else if (clientRepo.findByEmail(obj.getEmail()) != null) {
