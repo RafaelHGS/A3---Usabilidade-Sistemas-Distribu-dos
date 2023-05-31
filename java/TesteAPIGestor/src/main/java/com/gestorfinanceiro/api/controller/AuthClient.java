@@ -13,7 +13,7 @@ import com.gestorfinanceiro.api.repo.ClientRepo;
 @CrossOrigin(origins = "*")
 public class AuthClient {
 	@Autowired
-	private ClientRepo repoAction;
+	private ClientRepo clientRepo;
 
 	@Autowired
 	private AuthService authService;
@@ -28,23 +28,25 @@ public class AuthClient {
 		return authService.login(client);
 	}
 
+	//Duplicado no LoggedClient
 	// @GetMapping("/")
 	// public Iterable<Client> select(){
-	//     return repoAction.findAll();
+	//     return clientRepo.findAll();
 	// }
 
+	//Duplicado no LoggedClient?
 	@GetMapping("/{email}")
 	public Client findUsername(@PathVariable String email) {
-		return repoAction.findByEmail(email);
+		return clientRepo.findByEmail(email);
 	}
 
 	@PutMapping("/puuuuut")
 	public Client edit(@RequestBody Client client) {
-		return repoAction.save(client);
+		return clientRepo.save(client);
 	}
 
 	@DeleteMapping("/aroba/{id}")
 	public void delete(@PathVariable Long id) {
-		repoAction.findById(id);
+		clientRepo.findById(id);
 	}
 }
