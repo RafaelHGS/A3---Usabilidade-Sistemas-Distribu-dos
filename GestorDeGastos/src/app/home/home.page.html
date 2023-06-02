@@ -53,10 +53,10 @@
 	<ion-list *ngIf="type == 'ganho'">
 		<ng-container *ngFor="let gastoGanho of tkService.getGastoGanho(); let i = index">
 			<ion-item-sliding>
-				<ion-item *ngIf="tkService.confereValor(gastoGanho.valor)">
-					<ion-label>{{ gastoGanho?.nome }}</ion-label>
+				<ion-item *ngIf="tkService.confereValor(gastoGanho.financeValue)">
+					<ion-label>{{ gastoGanho?.financeName }}</ion-label>
 					<ion-badge id="badge-ganho" class=" ion-badge-color">
-						R$: {{gastoGanho.valor}}
+						R$: {{gastoGanho.financeValue}}
 					</ion-badge>
 				</ion-item>
 				<ion-item-options side="end">
@@ -75,10 +75,10 @@
 	<ion-list *ngIf="type == 'gasto'">
 		<ng-container *ngFor="let gastoGanho of tkService.getGastoGanho(); let i = index">
 			<ion-item-sliding>
-				<ion-item *ngIf="!tkService.confereValor(gastoGanho.valor)">
-					<ion-label>{{ gastoGanho?.nome }}</ion-label>
+				<ion-item *ngIf="!tkService.confereValor(gastoGanho.financeValue)">
+					<ion-label>{{ gastoGanho?.financeName }}</ion-label>
 					<ion-badge id="badge-gasto">
-						R$: {{gastoGanho.valor}}
+						R$: {{gastoGanho.financeValue}}
 					</ion-badge>
 				</ion-item>
 				<ion-item-options side="end">
@@ -96,16 +96,16 @@
 	<ion-list *ngIf="type == 'total'">
 		<ng-container *ngFor="let gastoGanho of tkService.getGastoGanho(); let i = index">
 			<ion-item-sliding>
-				<ion-item *ngIf="!tkService.confereValor(gastoGanho.valor)">
-					<ion-label>{{ gastoGanho?.nome }}</ion-label>
+				<ion-item *ngIf="!tkService.confereValor(gastoGanho.financeValue)">
+					<ion-label>{{ gastoGanho?.financeName }}</ion-label>
 					<ion-badge id="badge-gasto" class=" ion-badge-color">
-						R$: {{gastoGanho.valor}}
+						R$: {{gastoGanho.financeValue}}
 					</ion-badge>
 				</ion-item>
-				<ion-item *ngIf="tkService.confereValor(gastoGanho.valor)">
-					<ion-label>{{ gastoGanho?.nome }}</ion-label>
+				<ion-item *ngIf="tkService.confereValor(gastoGanho.financeValue)">
+					<ion-label>{{ gastoGanho?.financeName }}</ion-label>
 					<ion-badge id="badge-ganho" class=" ion-badge-color">
-						R$: {{gastoGanho.valor}}
+						R$: {{gastoGanho.financeValue}}
 					</ion-badge>
 				</ion-item>
 				<ion-item-options side="end">

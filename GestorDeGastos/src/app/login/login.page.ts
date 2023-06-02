@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 import { ProfileService } from '../services/profile.service';
+import { FinancesAPIService } from '../services/finances-api.service';
 
 @Component({
   selector: 'app-login',
@@ -13,9 +14,11 @@ export class LoginPage implements OnInit {
 
   constructor(public profileService: ProfileService,
               public router: Router,
-              public toastController : ToastController) { }
+              public toastController : ToastController,
+              public apiService : FinancesAPIService) { }
 
   ngOnInit() {
+    // this.apiService.getFinance();
   }
 
   loginData = {

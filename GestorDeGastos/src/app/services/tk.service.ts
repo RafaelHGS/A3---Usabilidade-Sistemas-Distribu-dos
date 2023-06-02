@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Preferences } from '@capacitor/preferences';
+import { FinancesAPIService } from './finances-api.service';
+import { ProfileService } from './profile.service';
 
 @Injectable({
   providedIn: 'root'
@@ -7,12 +9,27 @@ import { Preferences } from '@capacitor/preferences';
 
 export class TkService {
 
-  private gastoGanhos: GastoGanho[] = [];
+  private gastoGanhos: any[] = [];
   private Saldo : Number = 0;
 
-  constructor() {
+  constructor(public financeApi : FinancesAPIService,
+              public profileService : ProfileService) {
 
    }
+
+
+   public async setGastoGanhos() {
+    try {
+      const financesData: any = await this.financeApi.getFinance();
+      for (let finance of financesData) {
+        if (finance.clientId == this.profileService.getUserId())
+          this.gastoGanhos.push(finance);
+      }
+    } catch (error: any) {
+      console.log(error)
+    }
+  }
+  
 
    public getSaldo(): Number{
     return this.Saldo;
@@ -23,13 +40,18 @@ export class TkService {
   }
 
 
-   public getGastoGanho() : GastoGanho[]{
+   public getGastoGanho() : any[]{
     return this.gastoGanhos;
    }
 
+  
    public adicionarGastoGanho(nome: string, valor: number){
-    let gastoGanho : GastoGanho = {nome: nome, valor: valor};
+    let gastoGanho = {financeName: nome, financeValue: valor};
     this.gastoGanhos.push(gastoGanho);
+    this.financeApi.financeData.financeName = nome;
+    this.financeApi.financeData.financeValue = valor;
+    this.financeApi.financeData.clientId = Number(this.profileService.getUserId());
+    this.financeApi.addFinance();
     this.setGastoGanhoToStorage();
     this.setSaldo(valor);
     
@@ -42,10 +64,17 @@ export class TkService {
    }
 
    public atualizarGastoGanho(index: number, nome: string, valor: number){
-    let gastoGanho: GastoGanho = this.gastoGanhos[index];
+    let gastoGanho = this.gastoGanhos[index];
     gastoGanho.nome = nome;
     gastoGanho.valor = valor;
     this.gastoGanhos.splice(index, 1, gastoGanho);
+
+    this.financeApi.financeData.financeName = nome;
+    this.financeApi.financeData.financeValue = valor;
+    this.financeApi.financeData.clientId = Number(this.profileService.getUserId());
+    console.log(this.financeApi.financeData);
+    this.financeApi.editFinance();
+
     this.setGastoGanhoToStorage();
     this.setSaldo(valor);
    }
@@ -67,9 +96,9 @@ export class TkService {
       // Restante da lógica com o array auxGastosGanhos
       if (Array.isArray(auxGastosGanhos)) {
         for (let i of auxGastosGanhos) {
-          let gastoGanho : GastoGanho = {nome: i.nome, valor: i.valor};
+          let gastoGanho = {financeId: i.financeId, financeName: i.financeName, financeValue: i.financeValue, clientId: i.clientId};
           this.gastoGanhos.push(gastoGanho);
-          this.setSaldo(gastoGanho.valor)
+          this.setSaldo(gastoGanho.financeName)
         }
       }
       
@@ -87,8 +116,8 @@ export class TkService {
 }
 
 
-interface GastoGanho {
-  nome: String;
-  valor: Number;
+// interface GastoGanho {
+//   nome: String;
+//   valor: Number;
 
-}
+// }

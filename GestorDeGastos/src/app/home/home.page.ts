@@ -19,10 +19,14 @@ export class HomePage {
               public tkService: TkService,
               public toastController: ToastController,
               public popoverController : PopoverController, 
-              public router: Router) {}
+              public router: Router,) {}
   
   ngOnInit(){
-    this.tkService.getGastoGanhoFromStorage();
+    this.tkService.setGastoGanhos();
+    if (this.tkService.getGastoGanho() == null){
+      this.tkService.getGastoGanhoFromStorage();
+    }
+
   }
 
 
