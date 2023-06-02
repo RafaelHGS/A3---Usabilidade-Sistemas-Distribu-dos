@@ -12,7 +12,7 @@ import lombok.Setter;
 @Table(name = "financas")
 @Getter
 @Setter
-public class Finances {
+public class Finance {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;

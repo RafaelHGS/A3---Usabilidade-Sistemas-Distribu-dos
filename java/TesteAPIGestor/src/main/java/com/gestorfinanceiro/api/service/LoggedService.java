@@ -30,7 +30,9 @@ public class LoggedService {
 
 	//Put Client
 	public ResponseEntity<?> editClient(Client client){
-		if(client == null){
+		Client storedClient = clientRepo.findByEmail(client.getEmail());
+
+		if(storedClient == null){
 			message.setMessage("Usuário Não encontrado");
 			return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
 		}else if(client.getId() == 0 || client.getId() == null){
@@ -40,11 +42,11 @@ public class LoggedService {
 			message.setMessage("Cliente inválido");
 			return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
 		}
-		else if(client.getEmail() == "" || client.getName() == null){
+		else if(client.getEmail() == "" || client.getEmail() == null){
 			message.setMessage("Email inválido");
 			return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
 		}
-		else if(clientRepo.findByEmail(client.getEmail()) != null){
+		else if(storedClient != null && storedClient.getId() != client.getId()){
 			message.setMessage("Email já existente");
 			return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
 		}else{

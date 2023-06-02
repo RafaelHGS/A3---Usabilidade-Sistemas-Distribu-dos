@@ -9,46 +9,46 @@ import axios from 'axios';
 export class ProfileService {
 
   constructor(public alertController: AlertController,
-              public toastController : ToastController,
-              public router: Router) { }
+    public toastController: ToastController,
+    public router: Router) { }
 
-  private email : String = "";
-  private username : String = "";
-  private userId : Number = 0;
+  private email: String = "";
+  private username: String = "";
+  private userId: Number = 0;
 
-  public setEmail(email : String){
+  public setEmail(email: String) {
     this.email = email;
   }
 
-  public getEmail(){
+  public getEmail() {
     return this.email;
   }
 
-  
-  public setUsername(username : String){
+
+  public setUsername(username: String) {
     this.username = username;
   }
 
-  public getUsername(){
+  public getUsername() {
     return this.username;
   }
 
-  public setUserId(userId : Number){
+  public setUserId(userId: Number) {
     this.userId = userId;
   }
 
-  public getUserId(){
+  public getUserId() {
     return this.userId;
   }
 
 
-  async verifyEmail(email : String){
-    try{
-      const url = "http://localhost:8080/loggedUser/"+email;
+  async verifyEmail(email: String) {
+    try {
+      const url = "http://localhost:8080/loggedUser/" + email;
       const response = await axios.get(url);
       console.log(response)
       return true;
-    }catch (error){
+    } catch (error) {
       console.error(error)
       return false;
     }
@@ -56,12 +56,12 @@ export class ProfileService {
 
   async setProfile() {
     try {
-      const url = "http://localhost:8080/loggedUser/"+this.getEmail();
+      const url = "http://localhost:8080/loggedUser/" + this.getEmail();
       const response = await axios.get(url);
       this.setUserId(response.data.id);
       this.setUsername(response.data.name);
 
-    } catch (error : any) {
+    } catch (error: any) {
 
       const aux = error.response.data.message;
       console.error(aux);
@@ -81,8 +81,8 @@ export class ProfileService {
     }
   }
 
-  
-  async presentAlertPrompteditProfile(){
+
+  async presentAlertPrompteditProfile() {
     const alert = await this.alertController.create({
       header: "Alterar Dados",
       inputs: [
@@ -112,8 +112,8 @@ export class ProfileService {
         }, {
           text: "Alterar",
           handler: async (dadosAlert) => {
-            if (dadosAlert.name != "" && dadosAlert.email != "" && dadosAlert.senha != ""){
-              try{
+            if (dadosAlert.name != "") {
+              try {
                 const userData = {
                   id: this.getUserId(),
                   name: dadosAlert.name,
@@ -121,14 +121,21 @@ export class ProfileService {
                   password: dadosAlert.senha
                 };
 
+                if (dadosAlert.email == "" || dadosAlert.email == null) {
+                  userData.email = this.getEmail();
+                }
+                if (dadosAlert.password == "" || dadosAlert.password == null) {
+                  userData.password = null;
+                }
 
-                  const url = "http://localhost:8080/loggedUser/User";
-                  const response = await axios.put(url, userData);
-  
-                  this.setUsername(dadosAlert.name);
-                  this.setEmail(dadosAlert.email);
 
-              } catch (error : any){
+                const url = "http://localhost:8080/loggedUser/User";
+                const response = await axios.put(url, userData);
+
+                this.setUsername(userData.name);
+                this.setEmail(userData.email);
+
+              } catch (error: any) {
                 const aux = error.response.data.message;
 
                 const toast = await this.toastController.create({
@@ -140,7 +147,7 @@ export class ProfileService {
 
               }
             }
-            else{
+            else {
 
               this.presentToast();
               this.presentAlertPrompteditProfile();
@@ -150,12 +157,11 @@ export class ProfileService {
       ]
     })
     await alert.present();
-  
+
   }
 
 
-  public async deleteProfile(){
-
+  public async deleteProfile() {
     const alert = await this.alertController.create({
       header: "Exclusão !!!",
       message: 'Deseja Realmente excluir sua conta ? Essa Ação não poderá ser desfeita!',
@@ -165,24 +171,24 @@ export class ProfileService {
           role: "cancel",
         }, {
           text: "Excluir",
-            handler: async () => {
-              try{
-                const url = "http://localhost:8080/loggedUser/delete/"+this.getEmail();
-                const response = await axios.delete(url);
+          handler: async () => {
+            try {
+              const url = "http://localhost:8080/loggedUser/delete/" + this.getEmail();
+              const response = await axios.delete(url);
 
-                const toast = await this.toastController.create({
-                  message: "Usuário Excluído com sucesso",
-                  duration: 2500
-                });
-                toast.present();
+              const toast = await this.toastController.create({
+                message: "Usuário Excluído com sucesso",
+                duration: 2500
+              });
+              toast.present();
 
-                this.router.navigate(["login"]);
-                
-              }catch (error){
-                console.error(error);
-              }
+              this.router.navigate(["login"]);
+
+            } catch (error) {
+              console.error(error);
             }
           }
+        }
       ]
     })
     await alert.present();
@@ -190,9 +196,9 @@ export class ProfileService {
 
 
   }
-  
 
-  async presentToast(){
+
+  async presentToast() {
     const toast = await this.toastController.create({
       message: "Preencha os campos!",
       duration: 2500
