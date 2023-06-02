@@ -11,26 +11,23 @@ import com.gestorfinanceiro.api.service.FinanceService;
 @RequestMapping("/finances")
 @CrossOrigin(origins = "*")
 public class FinanceClient {
-	
-    @Autowired
+	@Autowired
 	private FinanceService financeService;
 
 	@Autowired
 	private FinanceRepo financeRepo;
 
 	//Add Finance
-   @PostMapping("/add")
-	public ResponseEntity<?> addFinance(@RequestBody Finance finance ) {
+	@PostMapping("/add")
+	public ResponseEntity<?> addFinance(@RequestBody Finance finance) {
 		return financeService.addFinance(finance);
 	}
-	
-	
+
 	//Edit Finance
 	@PutMapping("/edit")
-	 public ResponseEntity<?> editFinance(@RequestBody Finance finance ) {
-		 return financeService.editFinance(finance);
-	 }
-
+	public ResponseEntity<?> editFinance(@RequestBody Finance finance) {
+		return financeService.editFinance(finance);
+	}
 
 	//Delete Finance
 	@DeleteMapping("/delete/{financeId}")
@@ -38,12 +35,9 @@ public class FinanceClient {
 		return financeService.deleteFinance(financeRepo.findByFinanceId(financeId));
 	}
 
-
 	//List Finances
 	@GetMapping("/list")
 	public ResponseEntity<?> listFinances() {
 		return financeService.listFinances();
 	}
-
-
 }

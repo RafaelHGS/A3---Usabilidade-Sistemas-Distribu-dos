@@ -11,10 +11,9 @@ import com.gestorfinanceiro.api.repo.ClientRepo;
 
 @Service
 public class AuthService {
-
 	@Autowired
 	private ClientRepo clientRepo;
-	
+
 	@Autowired
 	private SystemMessage message;
 
@@ -22,7 +21,7 @@ public class AuthService {
 		if (client.getName() == null || client.getName().equals("")) {
 			message.setMessage("Preencha um nome");
 			return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
-		} else if (client.getEmail().equals("") ||client.getEmail() == null) {
+		} else if (client.getEmail().equals("") || client.getEmail() == null) {
 			message.setMessage("Preencha um nome de email");
 			return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
 		} else if (client.getPassword() == null || client.getPassword().equals("")) {
@@ -44,7 +43,8 @@ public class AuthService {
 			message.setMessage("Usuário/Senha Incorretos");
 			return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
 		} else {
-			message.setMessage("Usuário/Senha Incorretos");;
+			message.setMessage("Usuário/Senha Incorretos");
+			;
 			return new ResponseEntity<>(message, HttpStatus.OK);
 		}
 	}

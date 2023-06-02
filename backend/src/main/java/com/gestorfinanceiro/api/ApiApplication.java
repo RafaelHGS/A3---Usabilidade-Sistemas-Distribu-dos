@@ -19,37 +19,22 @@ public class ApiApplication {
 	@Bean
 	CommandLineRunner criaClientes(ClientRepo clientRepo) {
 		return args -> {
-			clientRepo.save(new Client(
-				null, "Diego", "diego@gmail.com", "123"
-			));
-			clientRepo.save(new Client(
-				null, "Rafael", "rafael@yahoo.com", "123"
-			));
-			clientRepo.save(new Client(
-				null, "Vini", "vini@hotmail.com", "123"
-			));
+			clientRepo.save(new Client(null, "Diego", "diego@gmail.com", "123"));
+			clientRepo.save(new Client(null, "Rafael", "rafael@yahoo.com", "123"));
+			clientRepo.save(new Client(null, "Vini", "vini@hotmail.com", "123"));
 		};
 	}
 
 	@Bean
 	CommandLineRunner criaGastos(FinanceRepo financeRepo) {
 		return args -> {
-			financeRepo.save(new Finance(
-				null, "Pix", 120, (long) 1
-			));
-			financeRepo.save(new Finance(
-				null, "Pix", 130, (long) 1
-			));
-			financeRepo.save(new Finance(
-				null, "Pix", -20, (long) 1
-			));
-			financeRepo.save(new Finance(
-				null, "Pix", -30, (long) 1
-			));
+			financeRepo.save(new Finance(null, "Pix", 120, (long) 1));
+			financeRepo.save(new Finance(null, "Pix", 130, (long) 1));
+			financeRepo.save(new Finance(null, "Pix", -20, (long) 1));
+			financeRepo.save(new Finance(null, "Pix", -30, (long) 1));
 		};
 	}
 }
-
 
 // private Long financeId;
 

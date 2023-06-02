@@ -27,48 +27,41 @@ public class LoggedService {
 		}
 	}
 
-
 	//Put Client
-	public ResponseEntity<?> editClient(Client client){
+	public ResponseEntity<?> editClient(Client client) {
 		Client storedClient = clientRepo.findByEmail(client.getEmail());
 
-		if(storedClient == null){
+		if (storedClient == null) {
 			message.setMessage("Usuário Não encontrado");
 			return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
-		}else if(client.getId() == 0 || client.getId() == null){
+		} else if (client.getId() == 0 || client.getId() == null) {
 			message.setMessage("Id inválido");
 			return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
-		}else if(client.getName() == "" || client.getName() == null){
+		} else if (client.getName() == "" || client.getName() == null) {
 			message.setMessage("Cliente inválido");
 			return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
-		}
-		else if(client.getEmail() == "" || client.getEmail() == null){
+		} else if (client.getEmail() == "" || client.getEmail() == null) {
 			message.setMessage("Email inválido");
 			return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
-		}
-		else if(storedClient != null && storedClient.getId() != client.getId()){
+		} else if (storedClient != null && storedClient.getId() != client.getId()) {
 			message.setMessage("Email já existente");
 			return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
-		}else{
-			if(client.getPassword() == "" || client.getPassword() == null){
-				client.setPassword(clientRepo.findByEmail(client.getEmail()).getPassword());
-				return new ResponseEntity<>(clientRepo.save(client), HttpStatus.OK);
-			}
+		} else if (client.getPassword() == "" || client.getPassword() == null) {
+			client.setPassword(clientRepo.findByEmail(client.getEmail()).getPassword());
 			return new ResponseEntity<>(clientRepo.save(client), HttpStatus.OK);
 		}
+		return new ResponseEntity<>(clientRepo.save(client), HttpStatus.OK);
 	}
 
-
 	//Delete Client
-	public ResponseEntity<?> deleteClient(Client client){
-		if(client.getEmail() == "" || client.getName() == null){
+	public ResponseEntity<?> deleteClient(Client client) {
+		if (client.getEmail() == "" || client.getName() == null) {
 			message.setMessage("Email inválido");
 			return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
-		}else{
+		} else {
 			clientRepo.delete(client);
 			message.setMessage("Pessoa removida");
 			return new ResponseEntity<>(message, HttpStatus.OK);
 		}
 	}
-
 }

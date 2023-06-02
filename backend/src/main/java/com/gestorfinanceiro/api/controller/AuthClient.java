@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/auth")
 @CrossOrigin(origins = "*")
 public class AuthClient {
-
 	@Autowired
 	private AuthService authService;
 
@@ -23,5 +22,4 @@ public class AuthClient {
 	public ResponseEntity<?> login(@RequestBody Client client) {
 		return authService.login(client);
 	}
-
 }

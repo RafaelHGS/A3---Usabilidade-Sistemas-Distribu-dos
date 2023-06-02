@@ -24,20 +24,17 @@ public class LoggedClient {
 		return loggedService.getClientByEmail(clientRepo.findByEmail(email));
 	}
 
-
-	//PutClient
+	//Put Client
 	@PutMapping("/User")
 	public ResponseEntity<?> editClient(@RequestBody Client client) {
 		return loggedService.editClient(client);
 	}
 
-
-	//Dele Client
+	//Delete Client
 	@DeleteMapping("/delete/{email}")
 	public ResponseEntity<?> delete(@PathVariable String email) {
 		return loggedService.deleteClient(clientRepo.findByEmail(email));
 	}
-
 
 	//Test List
 	@GetMapping("/list")

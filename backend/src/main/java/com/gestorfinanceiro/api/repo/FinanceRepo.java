@@ -9,13 +9,9 @@ import com.gestorfinanceiro.api.model.Finance;
 
 @Repository
 public interface FinanceRepo extends CrudRepository<Finance, Long> {
-
 	Long findByClientId(Integer clientId);
 
-	
 	Finance findByFinanceId(Long financeId);
 
-	
 	List<FinanceRepo> findFinanceByClientId(Long clientId);
-	
 }
