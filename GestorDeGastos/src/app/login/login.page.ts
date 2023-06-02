@@ -18,7 +18,6 @@ export class LoginPage implements OnInit {
               public apiService : FinancesAPIService) { }
 
   ngOnInit() {
-    // this.apiService.getFinance();
   }
 
   loginData = {

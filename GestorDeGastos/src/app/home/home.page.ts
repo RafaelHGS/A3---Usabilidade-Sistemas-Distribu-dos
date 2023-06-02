@@ -16,31 +16,31 @@ export class HomePage {
   type: string = "ganho";
 
   constructor(private alertController: AlertController,
-              public tkService: TkService,
-              public toastController: ToastController,
-              public popoverController : PopoverController, 
-              public router: Router,) {}
-  
-  ngOnInit(){
+    public tkService: TkService,
+    public toastController: ToastController,
+    public popoverController: PopoverController,
+    public router: Router,) { }
+
+  ngOnInit() {
     this.tkService.setGastoGanhos();
-    if (this.tkService.getGastoGanho() == null){
-      this.tkService.getGastoGanhoFromStorage();
-    }
+    // if (this.tkService.getGastoGanho() == null){
+    //   this.tkService.getGastoGanhoFromStorage();
+    // }
 
   }
 
 
-  logout(){
+  logout() {
     this.popoverController.dismiss();
     this.router.navigate(["login"])
   }
 
-  profile(){
+  profile() {
     this.popoverController.dismiss();
     this.router.navigate(["profile"])
   }
 
-  async presentAlertPromptAdicionar(){
+  async presentAlertPromptAdicionar() {
     const alert = await this.alertController.create({
       header: "Novo Gasto/Ganho",
       inputs: [
@@ -52,7 +52,7 @@ export class HomePage {
         {
           name: "valor",
           type: "number",
-        }  
+        }
       ],
       buttons: [
         {
@@ -66,7 +66,7 @@ export class HomePage {
           handler: (dadosAlert) => {
             if (dadosAlert.gastoGanho != "" && dadosAlert.valor != "")
               this.tkService.adicionarGastoGanho(dadosAlert.gastoGanho, dadosAlert.valor)
-            else{
+            else {
               this.presentToast();
               this.presentAlertPromptAdicionar();
             }
@@ -78,7 +78,7 @@ export class HomePage {
   }
 
 
-  async presentAlertPromptLimpar(index : number, valor : Number){
+  async presentAlertPromptLimpar(index: number, valor: Number) {
     const alert = await this.alertController.create({
       header: "Exclusão !!!",
       message: 'Deseja Excluir essa Entrada/Saída ?',
@@ -88,15 +88,15 @@ export class HomePage {
           role: "cancel",
         }, {
           text: "Excluir",
-          handler: () => this.tkService.limparGastoGanho(index, Number(valor)*-1)
-          }
+          handler: () => this.tkService.limparGastoGanho(index, Number(valor) * -1)
+        }
       ]
     })
     await alert.present();
   }
 
-  
-  async presentAlertPromptAtualizar(index: number, gastoGanho: any){
+
+  async presentAlertPromptAtualizar(index: number, gastoGanho: any) {
     const alert = await this.alertController.create({
       header: "Alterar Campo",
       inputs: [
@@ -110,7 +110,7 @@ export class HomePage {
           name: "valor",
           type: "number",
           value: gastoGanho.valor
-        }  
+        }
       ],
       buttons: [
         {
@@ -119,15 +119,14 @@ export class HomePage {
           handler: () => {
             console.log("Confirm Cancel");
           }
-        }, {
+        },
+        {
           text: "Salvar",
           handler: (dadosAlert) => {
-            this.tkService.setSaldo(Number(gastoGanho.valor)*-1);
-            if (dadosAlert.gastoGanho != "" && dadosAlert.valor != ""){
+            this.tkService.setSaldo(Number(gastoGanho.valor) * -1);
+            if (dadosAlert.gastoGanho != "" && dadosAlert.valor != "") {
               this.tkService.atualizarGastoGanho(index, dadosAlert.gastoGanho, dadosAlert.valor)
-              
-            }
-            else{
+            } else {
               this.presentToast();
               this.tkService.atualizarGastoGanho(index, dadosAlert.gastoGanho, dadosAlert.valor)
             }
@@ -139,7 +138,7 @@ export class HomePage {
   }
 
 
-  async presentToast(){
+  async presentToast() {
     const toast = await this.toastController.create({
       message: "Preencha os campos!",
       duration: 2500

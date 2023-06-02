@@ -30,10 +30,10 @@ export class FinancesAPIService {
 
   }
 
-  async editFinance(){
+  async editFinance(finance : any){
     try{
       const url = "http://localhost:8080/finances/edit";
-      const response = await axios.put(url, this.financeData);
+      const response = await axios.put(url, finance);
 
     }catch(error : any){
       this.presentToast(error.message.response);
