@@ -60,7 +60,7 @@ public class LoggedService {
 
 
 	//Delete Client
-	public ResponseEntity<?> remover(Client client){
+	public ResponseEntity<?> deleteClient(Client client){
 		if(client.getEmail() == "" || client.getName() == null){
 			message.setMessage("Email inválido");
 			return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);

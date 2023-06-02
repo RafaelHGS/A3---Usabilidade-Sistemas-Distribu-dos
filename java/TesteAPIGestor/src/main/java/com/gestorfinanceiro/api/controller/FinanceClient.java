@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.gestorfinanceiro.api.model.Finance;
-
+import com.gestorfinanceiro.api.repo.FinanceRepo;
 import com.gestorfinanceiro.api.service.FinanceService;
 
 @RestController
@@ -12,47 +12,38 @@ import com.gestorfinanceiro.api.service.FinanceService;
 @CrossOrigin(origins = "*")
 public class FinanceClient {
 	
-   @Autowired
+    @Autowired
 	private FinanceService financeService;
 
+	@Autowired
+	private FinanceRepo financeRepo;
 
+	//Add Finance
    @PostMapping("/add")
 	public ResponseEntity<?> addFinance(@RequestBody Finance finance ) {
 		return financeService.addFinance(finance);
 	}
+	
+	
+	//Edit Finance
+	@PutMapping("/edit")
+	 public ResponseEntity<?> editFinance(@RequestBody Finance finance ) {
+		 return financeService.editFinance(finance);
+	 }
 
 
-	// @PostMapping("/login")
-	// public ResponseEntity<?> login(@RequestBody Client client) {
-	// 	return authService.login(client);
-	// }
-
-   // //Get Cliente pelo email
-	// @GetMapping("/{email}")
-	// public ResponseEntity<?> getClientByEmail(@PathVariable String email) {
-	// 	return loggedService.getClientByEmail(clientRepo.findByEmail(email));
-	// }
+	//Delete Finance
+	@DeleteMapping("/delete/{financeId}")
+	public ResponseEntity<?> delete(@PathVariable Long financeId) {
+		return financeService.deleteFinance(financeRepo.findByFinanceId(financeId));
+	}
 
 
-	// //PutClient
-	// @PutMapping("/User")
-	// public ResponseEntity<?> editClient(@RequestBody Client client) {
-	// 	return loggedService.editClient(client);
-	// }
-
-
-	// //Dele Client
-	// @DeleteMapping("/delete/{email}")
-	// public ResponseEntity<?> delete(@PathVariable String email) {
-	// 	return loggedService.remover(clientRepo.findByEmail(email));
-	// }
-
-
-	// //Test List
-	// @GetMapping("/list")
-	// public Iterable<Client> listClients() {
-	// 	return clientRepo.findAll();
-	// }
+	//List Finances
+	@GetMapping("/list")
+	public ResponseEntity<?> listFinances() {
+		return financeService.listFinances();
+	}
 
 
 }

@@ -35,7 +35,7 @@ public class LoggedClient {
 	//Dele Client
 	@DeleteMapping("/delete/{email}")
 	public ResponseEntity<?> delete(@PathVariable String email) {
-		return loggedService.remover(clientRepo.findByEmail(email));
+		return loggedService.deleteClient(clientRepo.findByEmail(email));
 	}
 
 

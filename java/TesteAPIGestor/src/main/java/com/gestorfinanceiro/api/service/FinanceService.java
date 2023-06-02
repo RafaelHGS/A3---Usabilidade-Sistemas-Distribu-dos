@@ -1,5 +1,7 @@
 package com.gestorfinanceiro.api.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,14 +38,54 @@ public class FinanceService {
 			message.setMessage("Finança Adicionada com Sucesso");
 			return new ResponseEntity<>(financeRepo.save(finance), HttpStatus.CREATED);
 		}
-
-		// Client storedClient = clientRepo.findByEmail(client.getEmail());
-		// if (storedClient == null) {
-		// message.setMessage("Usuário não encontrado");
-		// return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
-		// } else {
-		// return new ResponseEntity<>(client, HttpStatus.OK);
-		// }
 	}
 
+
+	public ResponseEntity<?> editFinance(Finance finance){
+		Finance storedFinance = financeRepo.findByFinanceId(finance.getFinanceId());
+		if(storedFinance == null){
+			message.setMessage("O Gasto/Ganho não existe");
+			return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
+		}else if(finance.getFinanceName() == "" || finance.getFinanceName() == null ){
+			message.setMessage("Nome inválido para Gasto/Ganho");
+			return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+		}else if(finance.getFinanceValue() == 0){
+			message.setMessage("Valor inválido para Gasto/Ganho");
+			return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+		}else if(finance.getClientId() == 0 || finance.getClientId() == null){
+			message.setMessage("ID do Cliente não encontrado");
+			return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+		}else if(finance.getFinanceId() == 0 || finance.getFinanceId() == null){
+			message.setMessage("Id do Gasto/Ganho não encontrado");
+			return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+		}else{
+			return new ResponseEntity<>(financeRepo.save(finance), HttpStatus.OK);
+		}
+	}
+
+
+	//Delete Client
+	public ResponseEntity<?> deleteFinance(Finance finance){
+		if(finance.getFinanceId() == 0 || finance.getClientId() == null){
+			message.setMessage("Gasto/Ganho inválido");
+			return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+		}else{
+			financeRepo.delete(finance);
+			message.setMessage("Gasto/Ganho removidos com Sucesso");
+			return new ResponseEntity<>(message, HttpStatus.OK);
+		}
+	}
+	
+	
+	public ResponseEntity<?> listFinances(){
+		List<Finance> storedFinances = (List<Finance>) financeRepo.findAll();
+		if(storedFinances == null){
+			message.setMessage("Nenhuma finança encontrada");
+			return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
+		}
+		else{
+			return new ResponseEntity<>(storedFinances, HttpStatus.OK);
+		}
+
+	}
 }
