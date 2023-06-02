@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 import { ProfileService } from '../services/profile.service';
+import { FinancesAPIService } from '../services/finances-api.service';
 
 @Component({
   selector: 'app-login',
@@ -13,7 +14,8 @@ export class LoginPage implements OnInit {
 
   constructor(public profileService: ProfileService,
               public router: Router,
-              public toastController : ToastController) { }
+              public toastController : ToastController,
+              public apiService : FinancesAPIService) { }
 
   ngOnInit() {
   }
@@ -23,13 +25,16 @@ export class LoginPage implements OnInit {
     password: ''
   };
 
-  
+
   async login() {
     try {
-      const response = await axios.post('http://localhost:8080/auth/login', this.loginData);
+      const url= "http://localhost:8080/auth/login";
+      const response = await axios.post(url, this.loginData);
       this.profileService.setEmail(this.loginData.email);
       this.profileService.setProfile();
       this.router.navigate(["home"])
+      this.clearLogin();
+      
     } catch (error : any) {
 
       const aux = error.response.data.message;
@@ -37,6 +42,10 @@ export class LoginPage implements OnInit {
     }
   }
 
+  public clearLogin(){
+    this.loginData.email = '';
+    this.loginData.password = '';
+  }
 
   async presentToast(msg : String){
     const toast = await this.toastController.create({

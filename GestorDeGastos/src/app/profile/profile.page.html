@@ -11,15 +11,15 @@
 
 <ion-content [fullscreen]="true">
   <ion-list id="profile-info">
-    <ng-container *ngFor="let aux of profileService.getProfile(); let i = index">
-      <ion-item *ngIf="i == 0">
-        <ion-label>Nome: {{aux}}</ion-label>
-      </ion-item>
-      <ion-item *ngIf="i == 1">
-        <ion-label>Email: {{aux}}</ion-label>
-      </ion-item>
-    </ng-container>
+    <ion-item>
+      <ion-label>Nome: {{ profileService.getProfile()[0] }}</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>Email: {{ profileService.getProfile()[1] }}</ion-label>
+    </ion-item>
   </ion-list>
-  <ion-button class="profile-page-buttons">Alterar Dados</ion-button>
-  <ion-button class="profile-page-buttons">Excluir</ion-button>
+
+  <ion-button class="profile-page-buttons" (click)="profileService.presentAlertPrompteditProfile()">Alterar
+    Dados</ion-button>
+  <ion-button class="profile-page-buttons" (click)="profileService.deleteProfile()">Excluir</ion-button>
 </ion-content>

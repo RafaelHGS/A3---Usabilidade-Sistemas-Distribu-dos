@@ -11,26 +11,29 @@ import com.gestorfinanceiro.api.repo.ClientRepo;
 
 @Service
 public class AuthService {
+
 	@Autowired
 	private ClientRepo clientRepo;
-	private String message;
+	
+	@Autowired
+	private SystemMessage message;
 
 	public ResponseEntity<?> signup(Client client) {
 		if (client.getName() == null || client.getName().equals("")) {
-			message = "Preencha um nome";
+			message.setMessage("Preencha um nome");
 			return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
-		} else if (client.getEmail().equals("")) {
-			message = "Preencha um nome de email";
+		} else if (client.getEmail().equals("") ||client.getEmail() == null) {
+			message.setMessage("Preencha um nome de email");
 			return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
 		} else if (client.getPassword() == null || client.getPassword().equals("")) {
-			message = "A senha não pode ser vazia, preencha uma senha";
+			message.setMessage("A senha não pode ser vazia, preencha uma senha");
 			return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
 		} else if (clientRepo.findByEmail(client.getEmail()) != null) {
-			message = "Usuário já existe";
+			message.setMessage("Usuário já existe");
 			return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
 		} else {
 			clientRepo.save(client);
-			message = "Cadastro Realizado com Sucesso";
+			message.setMessage("Cadastro Realizado com Sucesso");
 			return new ResponseEntity<>(message, HttpStatus.CREATED);
 		}
 	}
@@ -38,10 +41,10 @@ public class AuthService {
 	public ResponseEntity<?> login(Client client) {
 		Client storedClient = clientRepo.findByEmail(client.getEmail());
 		if (storedClient == null || !storedClient.getPassword().equals(client.getPassword())) {
-			message = "Usuário/Senha Incorretos";
+			message.setMessage("Usuário/Senha Incorretos");
 			return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
 		} else {
-			message = "Usuário Logado com sucesso";
+			message.setMessage("Usuário/Senha Incorretos");;
 			return new ResponseEntity<>(message, HttpStatus.OK);
 		}
 	}
