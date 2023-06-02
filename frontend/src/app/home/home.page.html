@@ -1,0 +1,135 @@
+<ion-header [translucent]="true">
+	<ion-toolbar>
+		<ion-buttons slot="end">
+			<ion-button id="click-trigger">
+				<ion-icon name="ellipsis-vertical" slot="icon-only"></ion-icon>
+				<ion-popover trigger="click-trigger" triggerAction="click">
+					<ng-template>
+						<ion-list>
+							<ion-item>
+								<ion-icon name="person"></ion-icon>
+								<ion-label (click)="profile()">- Perfil</ion-label>
+							</ion-item>
+							<ion-item>
+								<ion-icon name="log-out-outline"></ion-icon>
+								<ion-label (click)="logout()">- Log-out</ion-label>
+							</ion-item>
+						</ion-list>
+					</ng-template>
+				</ion-popover>
+			</ion-button>
+		</ion-buttons>
+		<ion-title>
+			Gestor de Gastos
+		</ion-title>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+
+
+	<ion-segment [(ngModel)]="type">
+		<ion-segment-button value="ganho" layout="ion-start">
+			<ion-label>
+				<ion-icon id="arrow-up-icon" name="arrow-up"></ion-icon>
+				Ganhos
+			</ion-label>
+		</ion-segment-button>
+		<ion-segment-button value="gasto" layout="ion-start">
+			<ion-label>
+				<ion-icon id="arrow-down-icon" name="arrow-down"></ion-icon>
+				Gastos
+			</ion-label>
+		</ion-segment-button>
+		<ion-segment-button value="total" layout="ion-start">
+			<ion-label>
+				<ion-icon name="cash"></ion-icon>
+				Saldo Total: <br> {{tkService.getSaldo()}}
+			</ion-label>
+		</ion-segment-button>
+	</ion-segment>
+
+
+	<ion-list *ngIf="type == 'ganho'">
+		<ng-container *ngFor="let gastoGanho of tkService.getGastoGanho(); let i = index">
+			<ion-item-sliding>
+				<ion-item *ngIf="tkService.confereValor(gastoGanho.financeValue)">
+					<ion-label>{{ gastoGanho?.financeName }}</ion-label>
+					<ion-badge id="badge-ganho" class=" ion-badge-color">
+						R$: {{gastoGanho.financeValue}}
+					</ion-badge>
+				</ion-item>
+				<ion-item-options side="end">
+					<ion-item-option class="create-icon-color" (click)="presentAlertPromptAtualizar(i, gastoGanho)">
+						<ion-icon name="create-outline" slot="icon-only" color="#1e9483"></ion-icon>
+					</ion-item-option>
+					<ion-item-option class="trash-icon-color" (click)="presentAlertPromptLimpar(i, gastoGanho.valor)">
+						<ion-icon name="trash-outline" slot="icon-only" color="red"></ion-icon>
+					</ion-item-option>
+				</ion-item-options>
+			</ion-item-sliding>
+		</ng-container>
+	</ion-list>
+
+
+	<ion-list *ngIf="type == 'gasto'">
+		<ng-container *ngFor="let gastoGanho of tkService.getGastoGanho(); let i = index">
+			<ion-item-sliding>
+				<ion-item *ngIf="!tkService.confereValor(gastoGanho.financeValue)">
+					<ion-label>{{ gastoGanho?.financeName }}</ion-label>
+					<ion-badge id="badge-gasto">
+						R$: {{gastoGanho.financeValue}}
+					</ion-badge>
+				</ion-item>
+				<ion-item-options side="end">
+					<ion-item-option class="create-icon-color" (click)="presentAlertPromptAtualizar(i, gastoGanho)">
+						<ion-icon name="create-outline" slot="icon-only" color="#1e9483"></ion-icon>
+					</ion-item-option>
+					<ion-item-option class="trash-icon-color" (click)="presentAlertPromptLimpar(i, gastoGanho.valor)">
+						<ion-icon name="trash-outline" slot="icon-only" color="red"></ion-icon>
+					</ion-item-option>
+				</ion-item-options>
+			</ion-item-sliding>
+		</ng-container>
+	</ion-list>
+
+	<ion-list *ngIf="type == 'total'">
+		<ng-container *ngFor="let gastoGanho of tkService.getGastoGanho(); let i = index">
+			<ion-item-sliding>
+				<ion-item *ngIf="!tkService.confereValor(gastoGanho.financeValue)">
+					<ion-label>{{ gastoGanho?.financeName }}</ion-label>
+					<ion-badge id="badge-gasto" class=" ion-badge-color">
+						R$: {{gastoGanho.financeValue}}
+					</ion-badge>
+				</ion-item>
+				<ion-item *ngIf="tkService.confereValor(gastoGanho.financeValue)">
+					<ion-label>{{ gastoGanho?.financeName }}</ion-label>
+					<ion-badge id="badge-ganho" class=" ion-badge-color">
+						R$: {{gastoGanho.financeValue}}
+					</ion-badge>
+				</ion-item>
+				<ion-item-options side="end">
+					<ion-item-option class="create-icon-color" (click)="presentAlertPromptAtualizar(i, gastoGanho)">
+						<ion-icon name="create-outline" slot="icon-only" color="#1e9483"></ion-icon>
+					</ion-item-option>
+					<ion-item-option class="trash-icon-color" (click)="presentAlertPromptLimpar(i, gastoGanho.valor)">
+						<ion-icon name="trash-outline" slot="icon-only" color="red"></ion-icon>
+					</ion-item-option>
+				</ion-item-options>
+			</ion-item-sliding>
+		</ng-container>
+	</ion-list>
+
+
+	<ion-fab vertical="bottom" horizontal="end" slot="fixed">
+		<ion-fab-button id="context-menu-trigger" (click)="presentAlertPromptAdicionar()">
+			<ion-icon name="add"></ion-icon>
+		</ion-fab-button>
+		<ion-popover trigger="context-menu-trigger" triggerAction="context-menu">
+			<ng-template>
+				<ion-content class="ion-padding">Adicionar Entrada/Saída</ion-content>
+			</ng-template>
+		</ion-popover>
+	</ion-fab>
+
+</ion-content>
