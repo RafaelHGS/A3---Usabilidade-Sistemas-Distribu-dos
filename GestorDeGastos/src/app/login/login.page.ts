@@ -23,13 +23,16 @@ export class LoginPage implements OnInit {
     password: ''
   };
 
-  
+
   async login() {
     try {
-      const response = await axios.post('http://localhost:8080/auth/login', this.loginData);
+      const url= "http://localhost:8080/auth/login";
+      const response = await axios.post(url, this.loginData);
       this.profileService.setEmail(this.loginData.email);
       this.profileService.setProfile();
       this.router.navigate(["home"])
+      this.clearLogin();
+      
     } catch (error : any) {
 
       const aux = error.response.data.message;
@@ -37,6 +40,10 @@ export class LoginPage implements OnInit {
     }
   }
 
+  public clearLogin(){
+    this.loginData.email = '';
+    this.loginData.password = '';
+  }
 
   async presentToast(msg : String){
     const toast = await this.toastController.create({

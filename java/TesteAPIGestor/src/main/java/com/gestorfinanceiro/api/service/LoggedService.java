@@ -43,6 +43,10 @@ public class LoggedService {
 		else if(client.getEmail() == "" || client.getName() == null){
 			message.setMessage("Email inválido");
 			return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+		}
+		else if(clientRepo.findByEmail(client.getEmail()) != null){
+			message.setMessage("Email já existente");
+			return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
 		}else{
 			if(client.getPassword() == "" || client.getPassword() == null){
 				client.setPassword(clientRepo.findByEmail(client.getEmail()).getPassword());

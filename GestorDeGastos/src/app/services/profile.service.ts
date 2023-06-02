@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { AlertController } from '@ionic/angular';
+import { Router } from '@angular/router';
+import { AlertController, ToastController } from '@ionic/angular';
 import axios from 'axios';
 
 @Injectable({
@@ -7,7 +8,9 @@ import axios from 'axios';
 })
 export class ProfileService {
 
-  constructor(private alertController: AlertController) { }
+  constructor(public alertController: AlertController,
+              public toastController : ToastController,
+              public router: Router) { }
 
   private email : String = "";
   private username : String = "";
@@ -39,7 +42,19 @@ export class ProfileService {
   }
 
 
-  public async setProfile() {
+  async verifyEmail(email : String){
+    try{
+      const url = "http://localhost:8080/loggedUser/"+email;
+      const response = await axios.get(url);
+      console.log(response)
+      return true;
+    }catch (error){
+      console.error(error)
+      return false;
+    }
+  }
+
+  async setProfile() {
     try {
       const url = "http://localhost:8080/loggedUser/"+this.getEmail();
       const response = await axios.get(url);
@@ -67,7 +82,7 @@ export class ProfileService {
   }
 
   
-  public async editProfile(){
+  async presentAlertPrompteditProfile(){
     const alert = await this.alertController.create({
       header: "Alterar Dados",
       inputs: [
@@ -96,16 +111,39 @@ export class ProfileService {
           }
         }, {
           text: "Alterar",
-          handler: (dadosAlert) => {
-            if (dadosAlert.name != "" && dadosAlert.email != "")
-            //Implementar inserção de dados da API
-                console.log("aroba");
-            else{
-              console.log("aroba2")
-              //Implementar Erros de dados 
+          handler: async (dadosAlert) => {
+            if (dadosAlert.name != "" && dadosAlert.email != "" && dadosAlert.senha != ""){
+              try{
+                const userData = {
+                  id: this.getUserId(),
+                  name: dadosAlert.name,
+                  email: dadosAlert.email,
+                  password: dadosAlert.senha
+                };
 
-              // this.presentToast();
-              // this.presentAlertPromptAdicionar();
+
+                  const url = "http://localhost:8080/loggedUser/User";
+                  const response = await axios.put(url, userData);
+  
+                  this.setUsername(dadosAlert.name);
+                  this.setEmail(dadosAlert.email);
+
+              } catch (error : any){
+                const aux = error.response.data.message;
+
+                const toast = await this.toastController.create({
+                  message: aux,
+                  duration: 2500
+                });
+                toast.present();
+                this.presentAlertPrompteditProfile();
+
+              }
+            }
+            else{
+
+              this.presentToast();
+              this.presentAlertPrompteditProfile();
             }
           }
         }
@@ -118,16 +156,49 @@ export class ProfileService {
 
   public async deleteProfile(){
 
+    const alert = await this.alertController.create({
+      header: "Exclusão !!!",
+      message: 'Deseja Realmente excluir sua conta ? Essa Ação não poderá ser desfeita!',
+      buttons: [
+        {
+          text: "cancelar",
+          role: "cancel",
+        }, {
+          text: "Excluir",
+            handler: async () => {
+              try{
+                const url = "http://localhost:8080/loggedUser/delete/"+this.getEmail();
+                const response = await axios.delete(url);
+
+                const toast = await this.toastController.create({
+                  message: "Usuário Excluído com sucesso",
+                  duration: 2500
+                });
+                toast.present();
+
+                this.router.navigate(["login"]);
+                
+              }catch (error){
+                console.error(error);
+              }
+            }
+          }
+      ]
+    })
+    await alert.present();
+
+
+
   }
   
 
-  // async presentToast(){
-  //   const toast = await this.toastController.create({
-  //     message: "Preencha os campos!",
-  //     duration: 2500
-  //   });
-  //   toast.present();
-  // }
+  async presentToast(){
+    const toast = await this.toastController.create({
+      message: "Preencha os campos!",
+      duration: 2500
+    });
+    toast.present();
+  }
 
 
 }
