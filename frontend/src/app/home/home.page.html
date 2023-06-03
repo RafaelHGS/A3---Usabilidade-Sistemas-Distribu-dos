@@ -42,7 +42,7 @@
 		<ion-segment-button value="total" layout="ion-start">
 			<ion-label>
 				<ion-icon name="cash"></ion-icon>
-				Saldo Total: <br> {{tkService.getSaldo()}}
+				Saldo Total: <br> {{tkService.saldo}}
 			</ion-label>
 		</ion-segment-button>
 	</ion-segment>
@@ -60,7 +60,8 @@
 					<ion-item-option class="create-icon-color" (click)="presentAlertPromptAtualizar(i, gastoGanho)">
 						<ion-icon name="create-outline" slot="icon-only" color="#1e9483"></ion-icon>
 					</ion-item-option>
-					<ion-item-option class="trash-icon-color" (click)="presentAlertPromptLimpar(i, gastoGanho.valor)">
+					<ion-item-option class="trash-icon-color"
+						(click)="presentAlertPromptLimpar(i, gastoGanho.financeValue)">
 						<ion-icon name="trash-outline" slot="icon-only" color="red"></ion-icon>
 					</ion-item-option>
 				</ion-item-options>
@@ -81,7 +82,8 @@
 					<ion-item-option class="create-icon-color" (click)="presentAlertPromptAtualizar(i, gastoGanho)">
 						<ion-icon name="create-outline" slot="icon-only" color="#1e9483"></ion-icon>
 					</ion-item-option>
-					<ion-item-option class="trash-icon-color" (click)="presentAlertPromptLimpar(i, gastoGanho.valor)">
+					<ion-item-option class="trash-icon-color"
+						(click)="presentAlertPromptLimpar(i, gastoGanho.financeValue)">
 						<ion-icon name="trash-outline" slot="icon-only" color="red"></ion-icon>
 					</ion-item-option>
 				</ion-item-options>
@@ -108,7 +110,8 @@
 					<ion-item-option class="create-icon-color" (click)="presentAlertPromptAtualizar(i, gastoGanho)">
 						<ion-icon name="create-outline" slot="icon-only" color="#1e9483"></ion-icon>
 					</ion-item-option>
-					<ion-item-option class="trash-icon-color" (click)="presentAlertPromptLimpar(i, gastoGanho.valor)">
+					<ion-item-option class="trash-icon-color"
+						(click)="presentAlertPromptLimpar(i, gastoGanho.financeValue)">
 						<ion-icon name="trash-outline" slot="icon-only" color="red"></ion-icon>
 					</ion-item-option>
 				</ion-item-options>

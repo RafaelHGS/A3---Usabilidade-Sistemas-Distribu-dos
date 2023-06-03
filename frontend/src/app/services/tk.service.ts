@@ -9,7 +9,7 @@ import { ProfileService } from './profile.service';
 
 export class TkService {
 	private gastoGanhos: any[] = [];
-	private saldo: number = 0;
+	saldo: number = 0;
 
 	constructor(public financeApi: FinancesAPIService, public profileService: ProfileService) { }
 
@@ -28,9 +28,9 @@ export class TkService {
 	}
 
 
-	public getSaldo(): number {
-		return this.saldo;
-	}
+	// public getSaldo(): number {
+	// 	return this.saldo;
+	// }
 
 	public setSaldo(novaEntrada: number) {
 		this.saldo += novaEntrada;
@@ -54,12 +54,12 @@ export class TkService {
 
 	public limparGastoGanho(index: number, valor: number) {
 		this.gastoGanhos.splice(index, 1);
-		// this.setGastoGanhoToStorage();
-		this.setSaldo(valor);
+		this.setSaldo(valor * -1);
 	}
 
 	public atualizarGastoGanho(index: number, nome: string, valor: number) {
 		let gastoGanho = this.gastoGanhos[index];
+		this.setSaldo(+gastoGanho.financeValue * -1)
 		gastoGanho.financeName = nome;
 		gastoGanho.financeValue = valor;
 		this.gastoGanhos.splice(index, 1, gastoGanho);

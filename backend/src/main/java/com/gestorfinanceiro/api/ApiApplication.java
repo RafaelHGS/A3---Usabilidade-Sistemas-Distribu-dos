@@ -20,7 +20,7 @@ public class ApiApplication {
 	CommandLineRunner criaClientes(ClientRepo clientRepo) {
 		return args -> {
 			clientRepo.save(new Client(null, "Diego", "diego@gmail.com", "123"));
-			clientRepo.save(new Client(null, "Rafael", "rafael@yahoo.com", "123"));
+			clientRepo.save(new Client(null, "Rafael", "rafa", "123"));
 			clientRepo.save(new Client(null, "Vini", "vini@hotmail.com", "123"));
 		};
 	}
@@ -32,6 +32,10 @@ public class ApiApplication {
 			financeRepo.save(new Finance(null, "Pix", 130, (long) 1));
 			financeRepo.save(new Finance(null, "Pix", -20, (long) 1));
 			financeRepo.save(new Finance(null, "Pix", -30, (long) 1));
+			financeRepo.save(new Finance(null, "Pix", -10, (long) 2));
+			financeRepo.save(new Finance(null, "Pix", -10, (long) 2));
+			financeRepo.save(new Finance(null, "Pix",  20, (long) 2));
+			financeRepo.save(new Finance(null, "Pix",  10, (long) 2));
 		};
 	}
 }

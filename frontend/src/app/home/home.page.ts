@@ -62,9 +62,9 @@ export class HomePage {
 				{
 					text: "Ok",
 					handler: (dadosAlert) => {
-						const valor = parseFloat(dadosAlert.valor); // E preciso parsear o float do valor recebido no input(?)
-						if (dadosAlert.gastoGanho != "" && !isNaN(valor))
-							this.tkService.adicionarGastoGanho(dadosAlert.gastoGanho, valor)
+						// const valor = parseFloat(dadosAlert.valor); // E preciso parsear o float do valor recebido no input(?)
+						if (dadosAlert.gastoGanho != "" && !isNaN(dadosAlert.gastoGanho))
+							this.tkService.adicionarGastoGanho(dadosAlert.gastoGanho, dadosAlert.gastoGanho)
 						else {
 							this.presentToast().catch(error => console.error(error));
 							this.presentAlertPromptAdicionar().catch(error => console.error(error));
@@ -86,7 +86,7 @@ export class HomePage {
 					role: "cancel",
 				}, {
 					text: "Excluir",
-					handler: () => this.tkService.limparGastoGanho(index, valor * -1)
+					handler: () => this.tkService.limparGastoGanho(index, valor)
 				}
 			]
 		})
@@ -120,15 +120,11 @@ export class HomePage {
 				{
 					text: "Salvar",
 					handler: (dadosAlert) => {
-						this.tkService.setSaldo(+gastoGanho.valor * -1);
-
-						const valor = parseFloat(dadosAlert.valor); // E preciso parsear o float do valor recebido no input(?)
+						const valor = parseFloat(dadosAlert.valor);
 						if (dadosAlert.gastoGanho != "" && !isNaN(valor)) {
 							this.tkService.atualizarGastoGanho(index, dadosAlert.gastoGanho, valor)
 						} else {
-							this.presentToast().catch(error => console.error(error));
-							// mesma funcao chamada no if?
-							// this.tkService.atualizarGastoGanho(index, dadosAlert.gastoGanho, dadosAlert.valor)
+							this.presentToast();
 							this.presentAlertPromptAtualizar(index, gastoGanho).catch(error => console.error(error));
 						}
 					}
