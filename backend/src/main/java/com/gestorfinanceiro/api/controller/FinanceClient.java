@@ -22,22 +22,23 @@ public class FinanceClient {
 	public ResponseEntity<?> addFinance(@RequestBody Finance finance) {
 		return financeService.addFinance(finance);
 	}
-
+	
 	//Edit Finance
 	@PutMapping("/edit")
 	public ResponseEntity<?> editFinance(@RequestBody Finance finance) {
 		return financeService.editFinance(finance);
 	}
-
+	
 	//Delete Finance
 	@DeleteMapping("/delete/{financeId}")
 	public ResponseEntity<?> delete(@PathVariable Long financeId) {
 		return financeService.deleteFinance(financeRepo.findByFinanceId(financeId));
 	}
-
+	
 	//List Finances
 	@GetMapping("/list")
 	public ResponseEntity<?> listFinances() {
 		return financeService.listFinances();
 	}
+
 }

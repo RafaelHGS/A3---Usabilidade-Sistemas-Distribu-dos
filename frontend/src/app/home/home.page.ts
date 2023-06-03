@@ -21,10 +21,10 @@ export class HomePage {
 	) { }
 
 	ngOnInit() {
-		this.tkService.setGastoGanhos().catch(error => console.error(error)); // Eu nao sei se isso resolve alguma coisa
-		// if (this.tkService.getGastoGanho() === null){
-		//   this.tkService.getGastoGanhoFromStorage();
-		// }
+		this.tkService.setGastoGanhos();
+		if(this.tkService.getGastoGanho() != null){
+			this.tkService.getGastoGanhoFromStorage();
+		}
 	}
 
 	logout() {
@@ -63,11 +63,11 @@ export class HomePage {
 					text: "Ok",
 					handler: (dadosAlert) => {
 						// const valor = parseFloat(dadosAlert.valor); // E preciso parsear o float do valor recebido no input(?)
-						if (dadosAlert.gastoGanho != "" && !isNaN(dadosAlert.gastoGanho))
-							this.tkService.adicionarGastoGanho(dadosAlert.gastoGanho, dadosAlert.gastoGanho)
+						if (dadosAlert.gastoGanho != "" && dadosAlert.gastoGanho != null)
+							this.tkService.adicionarGastoGanho(dadosAlert.gastoGanho, dadosAlert.valor);
 						else {
-							this.presentToast().catch(error => console.error(error));
-							this.presentAlertPromptAdicionar().catch(error => console.error(error));
+							this.presentToast();
+							this.presentAlertPromptAdicionar();
 						}
 					}
 				}

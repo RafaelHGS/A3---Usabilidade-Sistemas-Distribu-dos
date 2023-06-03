@@ -42,17 +42,17 @@ export class ProfileService {
 	}
 
 
-	async verifyEmail(email: string) {
-		try {
-			const url = "http://localhost:8080/loggedUser/" + email;
-			const response = await axios.get(url);
-			console.log(response)
-			return true;
-		} catch (error) {
-			console.error(error)
-			return false;
-		}
-	}
+	// async verifyEmail(email: string) {
+	// 	try {
+	// 		const url = "http://localhost:8080/loggedUser/" + email;
+	// 		const response = await axios.get(url);
+	// 		console.log(response)
+	// 		return true;
+	// 	} catch (error) {
+	// 		console.error(error)
+	// 		return false;
+	// 	}
+	// }
 
 	async setProfile() {
 		try {

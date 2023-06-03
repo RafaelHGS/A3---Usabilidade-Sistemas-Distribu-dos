@@ -22,15 +22,26 @@ export class TkService {
 					this.gastoGanhos.push(finance);
 				}
 			}
+			this.setGastoGanhoToStorage();
 		} catch (error: any) {
 			console.log(error)
 		}
 	}
 
-
-	// public getSaldo(): number {
-	// 	return this.saldo;
-	// }
+	public async pushLastFinance(){
+		try {
+			const financesData: any = await this.financeApi.getFinance();
+			const financesFromThisClient : any[] = [];
+			for (let finance of financesData) {
+				if (finance.clientId === this.profileService.getUserId()) {
+					financesFromThisClient.push(finance);
+				}
+			}
+			this.gastoGanhos.push(financesFromThisClient[financesFromThisClient.length - 1]);
+		} catch (error: any) {
+			console.log(error)
+		}
+	}
 
 	public setSaldo(novaEntrada: number) {
 		this.saldo += novaEntrada;
@@ -41,20 +52,25 @@ export class TkService {
 	}
 
 
-	public adicionarGastoGanho(nome: string, valor: number) {
-		let gastoGanho = { financeName: nome, financeValue: valor };
-		this.gastoGanhos.push(gastoGanho);
-		this.financeApi.financeData.financeName = nome;
-		this.financeApi.financeData.financeValue = valor;
-		this.financeApi.financeData.clientId = this.profileService.getUserId();
-		this.financeApi.addFinance();
-		// this.setGastoGanhoToStorage();
-		this.setSaldo(valor);
+	public async adicionarGastoGanho(nome: string, valor: number) {
+		try{
+			this.financeApi.financeData.financeName = nome;
+			this.financeApi.financeData.financeValue = valor;
+			this.financeApi.financeData.clientId = this.profileService.getUserId();
+			await this.financeApi.addFinance();
+			this.pushLastFinance();
+			this.setSaldo(Number(valor));
+			this.setGastoGanhoToStorage();
+		}catch(error){
+			console.error();
+		}
 	}
 
 	public limparGastoGanho(index: number, valor: number) {
+		this.financeApi.deleteFinance(this.gastoGanhos[index].financeId);
 		this.gastoGanhos.splice(index, 1);
 		this.setSaldo(valor * -1);
+		this.setGastoGanhoToStorage();
 	}
 
 	public atualizarGastoGanho(index: number, nome: string, valor: number) {
@@ -63,10 +79,10 @@ export class TkService {
 		gastoGanho.financeName = nome;
 		gastoGanho.financeValue = valor;
 		this.gastoGanhos.splice(index, 1, gastoGanho);
-
 		this.financeApi.editFinance(gastoGanho);
-		console.log(valor);
 		this.setSaldo(valor);
+		this.setGastoGanhoToStorage();
+
 	}
 
 

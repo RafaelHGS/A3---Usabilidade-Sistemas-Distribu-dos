@@ -15,7 +15,7 @@ export class LoginPage implements OnInit {
   constructor(public profileService: ProfileService,
               public router: Router,
               public toastController : ToastController,
-              public apiService : FinancesAPIService) { }
+              public financeApi : FinancesAPIService) { }
 
   ngOnInit() {
   }

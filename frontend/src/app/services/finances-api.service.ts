@@ -51,6 +51,18 @@ export class FinancesAPIService {
 
 	}
 
+
+	async deleteFinance(financeId: String){
+		try {
+			const url = "http://localhost:8080/finances/delete/" + String(financeId);
+			const response = await axios.delete(url);
+			
+			return response.data;
+		} catch (error: any) {
+			this.presentToast(error.message.response);
+		}
+	}
+
 	async presentToast(msg: string) {
 		const toast = await this.toastController.create({
 			message: msg,
