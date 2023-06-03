@@ -43,7 +43,7 @@ public class FinanceService {
 		if (storedFinance == null) {
 			message.setMessage("O Gasto/Ganho não existe");
 			return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
-		} else if (finance.getFinanceName() == "" || finance.getFinanceName() == null) {
+		} else if (finance.getFinanceName().equals("") || finance.getFinanceName() == null) {
 			message.setMessage("Nome inválido para Gasto/Ganho");
 			return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
 		} else if (finance.getFinanceValue() == 0) {
