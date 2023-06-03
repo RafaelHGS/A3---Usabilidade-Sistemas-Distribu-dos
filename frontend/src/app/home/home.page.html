@@ -26,8 +26,6 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-
-
 	<ion-segment [(ngModel)]="type">
 		<ion-segment-button value="ganho" layout="ion-start">
 			<ion-label>
@@ -49,8 +47,7 @@
 		</ion-segment-button>
 	</ion-segment>
 
-
-	<ion-list *ngIf="type == 'ganho'">
+	<ion-list *ngIf="type === 'ganho'">
 		<ng-container *ngFor="let gastoGanho of tkService.getGastoGanho(); let i = index">
 			<ion-item-sliding>
 				<ion-item *ngIf="tkService.confereValor(gastoGanho.financeValue)">
@@ -71,8 +68,7 @@
 		</ng-container>
 	</ion-list>
 
-
-	<ion-list *ngIf="type == 'gasto'">
+	<ion-list *ngIf="type === 'gasto'">
 		<ng-container *ngFor="let gastoGanho of tkService.getGastoGanho(); let i = index">
 			<ion-item-sliding>
 				<ion-item *ngIf="!tkService.confereValor(gastoGanho.financeValue)">
@@ -93,7 +89,7 @@
 		</ng-container>
 	</ion-list>
 
-	<ion-list *ngIf="type == 'total'">
+	<ion-list *ngIf="type === 'total'">
 		<ng-container *ngFor="let gastoGanho of tkService.getGastoGanho(); let i = index">
 			<ion-item-sliding>
 				<ion-item *ngIf="!tkService.confereValor(gastoGanho.financeValue)">
@@ -120,7 +116,6 @@
 		</ng-container>
 	</ion-list>
 
-
 	<ion-fab vertical="bottom" horizontal="end" slot="fixed">
 		<ion-fab-button id="context-menu-trigger" (click)="presentAlertPromptAdicionar()">
 			<ion-icon name="add"></ion-icon>
@@ -131,5 +126,4 @@
 			</ng-template>
 		</ion-popover>
 	</ion-fab>
-
 </ion-content>

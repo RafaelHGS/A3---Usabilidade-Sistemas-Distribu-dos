@@ -4,207 +4,207 @@ import { AlertController, ToastController } from '@ionic/angular';
 import axios from 'axios';
 
 @Injectable({
-  providedIn: 'root'
+	providedIn: 'root'
 })
 export class ProfileService {
 
-  constructor(public alertController: AlertController,
-    public toastController: ToastController,
-    public router: Router) { }
+	constructor(public alertController: AlertController,
+					public toastController: ToastController,
+					public router: Router) { }
 
-  private email: String = "";
-  private username: String = "";
-  private userId: Number = 0;
+	private email: string = "";
+	private username: string = "";
+	private userId: number = 0;
 
-  public setEmail(email: String) {
-    this.email = email;
-  }
+	public setEmail(email: string) {
+		this.email = email;
+	}
 
-  public getEmail() {
-    return this.email;
-  }
-
-
-  public setUsername(username: String) {
-    this.username = username;
-  }
-
-  public getUsername() {
-    return this.username;
-  }
-
-  public setUserId(userId: Number) {
-    this.userId = userId;
-  }
-
-  public getUserId() {
-    return this.userId;
-  }
+	public getEmail() {
+		return this.email;
+	}
 
 
-  async verifyEmail(email: String) {
-    try {
-      const url = "http://localhost:8080/loggedUser/" + email;
-      const response = await axios.get(url);
-      console.log(response)
-      return true;
-    } catch (error) {
-      console.error(error)
-      return false;
-    }
-  }
+	public setUsername(username: string) {
+		this.username = username;
+	}
 
-  async setProfile() {
-    try {
-      const url = "http://localhost:8080/loggedUser/" + this.getEmail();
-      const response = await axios.get(url);
-      this.setUserId(response.data.id);
-      this.setUsername(response.data.name);
+	public getUsername() {
+		return this.username;
+	}
 
-    } catch (error: any) {
+	public setUserId(userId: number) {
+		this.userId = userId;
+	}
 
-      const aux = error.response.data.message;
-      console.error(aux);
-    }
-  }
-
-  public getProfile() {
-    try {
-      const tempProfile: any[] = [
-        this.getUsername(),
-        this.getEmail()
-      ];
-      return tempProfile;
-    } catch (error: any) {
-      console.error(error);
-      return [];
-    }
-  }
+	public getUserId() {
+		return this.userId;
+	}
 
 
-  async presentAlertPrompteditProfile() {
-    const alert = await this.alertController.create({
-      header: "Alterar Dados",
-      inputs: [
-        {
-          name: "name",
-          type: "text",
-          placeholder: "Novo nome"
-        },
-        {
-          name: "email",
-          type: "text",
-          placeholder: "Novo email"
-        },
-        {
-          name: "senha",
-          type: "text",
-          placeholder: "Nova senha"
-        }
-      ],
-      buttons: [
-        {
-          text: "cancelar",
-          role: "cancel",
-          handler: () => {
-            console.log("Confirm Cancel");
-          }
-        }, {
-          text: "Alterar",
-          handler: async (dadosAlert) => {
-            if (dadosAlert.name != "") {
-              try {
-                const userData = {
-                  id: this.getUserId(),
-                  name: dadosAlert.name,
-                  email: dadosAlert.email,
-                  password: dadosAlert.senha
-                };
+	async verifyEmail(email: string) {
+		try {
+			const url = "http://localhost:8080/loggedUser/" + email;
+			const response = await axios.get(url);
+			console.log(response)
+			return true;
+		} catch (error) {
+			console.error(error)
+			return false;
+		}
+	}
 
-                if (dadosAlert.email == "" || dadosAlert.email == null) {
-                  userData.email = this.getEmail();
-                }
-                if (dadosAlert.password == "" || dadosAlert.password == null) {
-                  userData.password = null;
-                }
+	async setProfile() {
+		try {
+			const url = "http://localhost:8080/loggedUser/" + this.getEmail();
+			const response = await axios.get(url);
+			this.setUserId(response.data.id);
+			this.setUsername(response.data.name);
+
+		} catch (error: any) {
+
+			const aux = error.response.data.message;
+			console.error(aux);
+		}
+	}
+
+	public getProfile() {
+		try {
+			const tempProfile: any[] = [
+				this.getUsername(),
+				this.getEmail()
+			];
+			return tempProfile;
+		} catch (error: any) {
+			console.error(error);
+			return [];
+		}
+	}
 
 
-                const url = "http://localhost:8080/loggedUser/User";
-                const response = await axios.put(url, userData);
+	async presentAlertPrompteditProfile() {
+		const alert = await this.alertController.create({
+			header: "Alterar Dados",
+			inputs: [
+				{
+					name: "name",
+					type: "text",
+					placeholder: "Novo nome"
+				},
+				{
+					name: "email",
+					type: "text",
+					placeholder: "Novo email"
+				},
+				{
+					name: "senha",
+					type: "text",
+					placeholder: "Nova senha"
+				}
+			],
+			buttons: [
+				{
+					text: "cancelar",
+					role: "cancel",
+					handler: () => {
+						console.log("Confirm Cancel");
+					}
+				}, {
+					text: "Alterar",
+					handler: async (dadosAlert) => {
+						if (dadosAlert.name != "") {
+							try {
+								const userData = {
+									id: this.getUserId(),
+									name: dadosAlert.name,
+									email: dadosAlert.email,
+									password: dadosAlert.senha
+								};
 
-                this.setUsername(userData.name);
-                this.setEmail(userData.email);
-
-              } catch (error: any) {
-                const aux = error.response.data.message;
-
-                const toast = await this.toastController.create({
-                  message: aux,
-                  duration: 2500
-                });
-                toast.present();
-                this.presentAlertPrompteditProfile();
-
-              }
-            }
-            else {
-
-              this.presentToast();
-              this.presentAlertPrompteditProfile();
-            }
-          }
-        }
-      ]
-    })
-    await alert.present();
-
-  }
-
-
-  public async deleteProfile() {
-    const alert = await this.alertController.create({
-      header: "Exclusão !!!",
-      message: 'Deseja Realmente excluir sua conta ? Essa Ação não poderá ser desfeita!',
-      buttons: [
-        {
-          text: "cancelar",
-          role: "cancel",
-        }, {
-          text: "Excluir",
-          handler: async () => {
-            try {
-              const url = "http://localhost:8080/loggedUser/delete/" + this.getEmail();
-              const response = await axios.delete(url);
-
-              const toast = await this.toastController.create({
-                message: "Usuário Excluído com sucesso",
-                duration: 2500
-              });
-              toast.present();
-
-              this.router.navigate(["login"]);
-
-            } catch (error) {
-              console.error(error);
-            }
-          }
-        }
-      ]
-    })
-    await alert.present();
+								if (dadosAlert.email === "" || dadosAlert.email === null) {
+									userData.email = this.getEmail();
+								}
+								if (dadosAlert.password === "" || dadosAlert.password === null) {
+									userData.password = null;
+								}
 
 
+								const url = "http://localhost:8080/loggedUser/User";
+								const response = await axios.put(url, userData);
 
-  }
+								this.setUsername(userData.name);
+								this.setEmail(userData.email);
+
+							} catch (error: any) {
+								const aux = error.response.data.message;
+
+								const toast = await this.toastController.create({
+									message: aux,
+									duration: 2500
+								});
+								toast.present();
+								this.presentAlertPrompteditProfile();
+
+							}
+						}
+						else {
+
+							this.presentToast();
+							this.presentAlertPrompteditProfile();
+						}
+					}
+				}
+			]
+		})
+		await alert.present();
+
+	}
 
 
-  async presentToast() {
-    const toast = await this.toastController.create({
-      message: "Preencha os campos!",
-      duration: 2500
-    });
-    toast.present();
-  }
+	public async deleteProfile() {
+		const alert = await this.alertController.create({
+			header: "Exclusão !!!",
+			message: 'Deseja Realmente excluir sua conta ? Essa Ação não poderá ser desfeita!',
+			buttons: [
+				{
+					text: "cancelar",
+					role: "cancel",
+				}, {
+					text: "Excluir",
+					handler: async () => {
+						try {
+							const url = "http://localhost:8080/loggedUser/delete/" + this.getEmail();
+							const response = await axios.delete(url);
+
+							const toast = await this.toastController.create({
+								message: "Usuário Excluído com sucesso",
+								duration: 2500
+							});
+							toast.present();
+
+							this.router.navigate(["login"]);
+
+						} catch (error) {
+							console.error(error);
+						}
+					}
+				}
+			]
+		})
+		await alert.present();
+
+
+
+	}
+
+
+	async presentToast() {
+		const toast = await this.toastController.create({
+			message: "Preencha os campos!",
+			duration: 2500
+		});
+		toast.present();
+	}
 
 
 }

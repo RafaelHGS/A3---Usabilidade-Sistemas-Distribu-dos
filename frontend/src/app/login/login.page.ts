@@ -47,9 +47,9 @@ export class LoginPage implements OnInit {
     this.loginData.password = '';
   }
 
-  async presentToast(msg : String){
+  async presentToast(msg : string){
     const toast = await this.toastController.create({
-      message: String(msg),
+      message: msg,
       duration: 2500
     });
     toast.present();
