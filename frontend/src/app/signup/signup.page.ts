@@ -32,12 +32,15 @@ export class SignupPage {
 		try {
 			const url = 'http://localhost:8080/auth/signup'; // Altere a URL conforme necessário
 			const response = await axios.post(url, this.signupData)
-
-			console.log(response.data); // Exemplo de resposta bem-sucedida
 			this.router.navigate(["login"])
 		} catch (error: any) {
-			const aux = error.response.data.message;
-			this.presentToast(aux);
+			try{
+				const aux = error.response.data.message;
+				this.presentToast(aux);
+			  }
+			  catch (error){
+				this.presentToast("Erro de Conexão com servidor, tente novamente mais tarde");
+			  }
 		}
 	}
 

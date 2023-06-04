@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import axios from 'axios';
-import { TkService } from './tk.service';
 import { ProfileService } from './profile.service';
 import { ToastController } from '@ionic/angular';
 

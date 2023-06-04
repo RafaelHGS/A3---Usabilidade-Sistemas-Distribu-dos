@@ -4,17 +4,17 @@ import { FinancesAPIService } from './finances-api.service';
 import { ProfileService } from './profile.service';
 
 @Injectable({
-	providedIn: 'root'
+  providedIn: 'root'
 })
-
-export class TkService {
-	private gastoGanhos: any[] = [];
+export class FinancesService {
+  private gastoGanhos: any[] = [];
 	saldo: number = 0;
 
 	constructor(public financeApi: FinancesAPIService, public profileService: ProfileService) { }
 
 	public async setGastoGanhos() {
 		try {
+			this.resetGastoGanho();
 			const financesData: any = await this.financeApi.getFinance();
 			for (let finance of financesData) {
 				if (finance.clientId === this.profileService.getUserId()) {
@@ -28,10 +28,10 @@ export class TkService {
 		}
 	}
 
-	public async pushLastFinance(){
+	public async pushLastFinance() {
 		try {
 			const financesData: any = await this.financeApi.getFinance();
-			const financesFromThisClient : any[] = [];
+			const financesFromThisClient: any[] = [];
 			for (let finance of financesData) {
 				if (finance.clientId === this.profileService.getUserId()) {
 					financesFromThisClient.push(finance);
@@ -47,13 +47,22 @@ export class TkService {
 		this.saldo += novaEntrada;
 	}
 
+	public resetSaldo() {
+		this.saldo = 0;
+	}
+
 	public getGastoGanho(): any[] {
 		return this.gastoGanhos;
 	}
 
+	public resetGastoGanho() {
+		this.gastoGanhos = [];
+		this.clearStorage();
+	}
+
 
 	public async adicionarGastoGanho(nome: string, valor: number) {
-		try{
+		try {
 			this.financeApi.financeData.financeName = nome;
 			this.financeApi.financeData.financeValue = valor;
 			this.financeApi.financeData.clientId = this.profileService.getUserId();
@@ -61,7 +70,7 @@ export class TkService {
 			this.pushLastFinance();
 			this.setSaldo(Number(valor));
 			this.setGastoGanhoToStorage();
-		}catch(error){
+		} catch (error) {
 			console.error();
 		}
 	}
@@ -110,6 +119,14 @@ export class TkService {
 		} else {
 			// Lidar com o caso em que o valor não está disponível ou não é uma string válida
 			console.error("Valor inválido ou não encontrado no storage.");
+		}
+	}
+
+	public async clearStorage() {
+		try {
+			await Preferences.remove({ key: 'GastosGanhos' });
+		} catch (error: any) {
+			console.error('Erro ao limpar o storage:', error);
 		}
 	}
 

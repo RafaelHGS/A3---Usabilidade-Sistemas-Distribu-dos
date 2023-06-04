@@ -28,20 +28,14 @@ public class ApiApplication {
 	@Bean
 	CommandLineRunner criaGastos(FinanceRepo financeRepo) {
 		return args -> {
-			financeRepo.save(new Finance(null, "Pix", 120, (long) 1));
-			financeRepo.save(new Finance(null, "Pix", 130, (long) 1));
-			financeRepo.save(new Finance(null, "Pix", -20, (long) 1));
-			financeRepo.save(new Finance(null, "Pix", -30, (long) 1));
-			financeRepo.save(new Finance(null, "Pix", -10, (long) 2));
-			financeRepo.save(new Finance(null, "Pix", -10, (long) 2));
-			financeRepo.save(new Finance(null, "Pix",  20, (long) 2));
-			financeRepo.save(new Finance(null, "Pix",  10, (long) 2));
+			financeRepo.save(new Finance(null, "Pix Diego", 120, (long) 1));
+			financeRepo.save(new Finance(null, "Pix Dieg", 130, (long) 1));
+			financeRepo.save(new Finance(null, "Pix Dieg", -20, (long) 1));
+			financeRepo.save(new Finance(null, "Pix Dieg", -30, (long) 1));
+			financeRepo.save(new Finance(null, "Pix Rafa", -10, (long) 2));
+			financeRepo.save(new Finance(null, "Pix Rafa", -10, (long) 2));
+			financeRepo.save(new Finance(null, "Pix Rafa",  20, (long) 2));
+			financeRepo.save(new Finance(null, "Pix Rafa",  10, (long) 2));
 		};
 	}
 }
-
-// private Long financeId;
-
-// private String financeName;
-// private double financeValue;
-// private Long clientId;

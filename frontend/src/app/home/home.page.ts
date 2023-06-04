@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { AlertController, ToastController, PopoverController } from '@ionic/angular';
-import { TkService } from '../services/tk.service';
 import { Router } from '@angular/router';
+import { ProfileService } from '../services/profile.service';
+import { FinancesService } from '../services/finances.service';
 
 @Component({
 	selector: 'app-home',
@@ -14,20 +15,24 @@ export class HomePage {
 
 	constructor(
 		private alertController: AlertController,
-		public tkService: TkService,
+		public financesService: FinancesService,
 		public toastController: ToastController,
 		public popoverController: PopoverController,
 		public router: Router,
+		public profileApi : ProfileService,
 	) { }
 
 	ngOnInit() {
-		this.tkService.setGastoGanhos();
-		if(this.tkService.getGastoGanho() != null){
-			this.tkService.getGastoGanhoFromStorage();
+		this.financesService.setGastoGanhos();
+		if(this.financesService.getGastoGanho() == null){
+			this.financesService.getGastoGanhoFromStorage();
 		}
 	}
 
 	logout() {
+		this.financesService.resetGastoGanho();
+		this.financesService.resetSaldo();
+		this.profileApi.resetProfile();
 		this.popoverController.dismiss().catch(error => console.error(error));
 		this.router.navigate(["login"]).catch(error => console.error(error));
 	}
@@ -64,7 +69,7 @@ export class HomePage {
 					handler: (dadosAlert) => {
 						// const valor = parseFloat(dadosAlert.valor); // E preciso parsear o float do valor recebido no input(?)
 						if (dadosAlert.gastoGanho != "" && dadosAlert.gastoGanho != null)
-							this.tkService.adicionarGastoGanho(dadosAlert.gastoGanho, dadosAlert.valor);
+							this.financesService.adicionarGastoGanho(dadosAlert.gastoGanho, dadosAlert.valor);
 						else {
 							this.presentToast();
 							this.presentAlertPromptAdicionar();
@@ -86,7 +91,7 @@ export class HomePage {
 					role: "cancel",
 				}, {
 					text: "Excluir",
-					handler: () => this.tkService.limparGastoGanho(index, valor)
+					handler: () => this.financesService.limparGastoGanho(index, valor)
 				}
 			]
 		})
@@ -122,7 +127,7 @@ export class HomePage {
 					handler: (dadosAlert) => {
 						const valor = parseFloat(dadosAlert.valor);
 						if (dadosAlert.gastoGanho != "" && !isNaN(valor)) {
-							this.tkService.atualizarGastoGanho(index, dadosAlert.gastoGanho, valor)
+							this.financesService.atualizarGastoGanho(index, dadosAlert.gastoGanho, valor)
 						} else {
 							this.presentToast();
 							this.presentAlertPromptAtualizar(index, gastoGanho).catch(error => console.error(error));

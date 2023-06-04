@@ -42,15 +42,15 @@
 		<ion-segment-button value="total" layout="ion-start">
 			<ion-label>
 				<ion-icon name="cash"></ion-icon>
-				Saldo Total: <br> {{tkService.saldo}}
+				Saldo Total: <br> {{financesService.saldo}}
 			</ion-label>
 		</ion-segment-button>
 	</ion-segment>
 
 	<ion-list *ngIf="type === 'ganho'">
-		<ng-container *ngFor="let gastoGanho of tkService.getGastoGanho(); let i = index">
+		<ng-container *ngFor="let gastoGanho of financesService.getGastoGanho(); let i = index">
 			<ion-item-sliding>
-				<ion-item *ngIf="tkService.confereValor(gastoGanho.financeValue)">
+				<ion-item *ngIf="financesService.confereValor(gastoGanho.financeValue)">
 					<ion-label>{{ gastoGanho?.financeName }}</ion-label>
 					<ion-badge id="badge-ganho" class=" ion-badge-color">
 						R$: {{gastoGanho.financeValue}}
@@ -70,9 +70,9 @@
 	</ion-list>
 
 	<ion-list *ngIf="type === 'gasto'">
-		<ng-container *ngFor="let gastoGanho of tkService.getGastoGanho(); let i = index">
+		<ng-container *ngFor="let gastoGanho of financesService.getGastoGanho(); let i = index">
 			<ion-item-sliding>
-				<ion-item *ngIf="!tkService.confereValor(gastoGanho.financeValue)">
+				<ion-item *ngIf="!financesService.confereValor(gastoGanho.financeValue)">
 					<ion-label>{{ gastoGanho?.financeName }}</ion-label>
 					<ion-badge id="badge-gasto">
 						R$: {{gastoGanho.financeValue}}
@@ -92,15 +92,15 @@
 	</ion-list>
 
 	<ion-list *ngIf="type === 'total'">
-		<ng-container *ngFor="let gastoGanho of tkService.getGastoGanho(); let i = index">
+		<ng-container *ngFor="let gastoGanho of financesService.getGastoGanho(); let i = index">
 			<ion-item-sliding>
-				<ion-item *ngIf="!tkService.confereValor(gastoGanho.financeValue)">
+				<ion-item *ngIf="!financesService.confereValor(gastoGanho.financeValue)">
 					<ion-label>{{ gastoGanho?.financeName }}</ion-label>
 					<ion-badge id="badge-gasto" class=" ion-badge-color">
 						R$: {{gastoGanho.financeValue}}
 					</ion-badge>
 				</ion-item>
-				<ion-item *ngIf="tkService.confereValor(gastoGanho.financeValue)">
+				<ion-item *ngIf="financesService.confereValor(gastoGanho.financeValue)">
 					<ion-label>{{ gastoGanho?.financeName }}</ion-label>
 					<ion-badge id="badge-ganho" class=" ion-badge-color">
 						R$: {{gastoGanho.financeValue}}

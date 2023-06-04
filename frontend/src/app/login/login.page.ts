@@ -36,9 +36,13 @@ export class LoginPage implements OnInit {
       this.clearLogin();
       
     } catch (error : any) {
-
-      const aux = error.response.data.message;
-      this.presentToast(aux);
+      try{
+        const aux = error.response.data.message;
+        this.presentToast(aux);
+      }
+      catch (error){
+        this.presentToast("Erro de Conexão com servidor, tente novamente mais tarde");
+      }
     }
   }
 
