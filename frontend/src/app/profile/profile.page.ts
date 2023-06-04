@@ -11,6 +11,7 @@ export class ProfilePage implements OnInit {
   constructor(public profileService: ProfileService) { }
 
   ngOnInit() {
+    //Captura de Perfil
     this.profileService.getProfile();
   }
 

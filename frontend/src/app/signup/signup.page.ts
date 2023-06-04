@@ -32,7 +32,7 @@ export class SignupPage {
 
 	async signup() {
 		try {
-			const url = urls.signup; // Altere a URL conforme necessário
+			const url = urls.signup;
 			const response = await axios.post(url, this.signupData)
 			this.router.navigate(["login"])
 		} catch (error: any) {

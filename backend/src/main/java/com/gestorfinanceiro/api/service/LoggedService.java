@@ -1,8 +1,14 @@
 package com.gestorfinanceiro.api.service;
 
 import com.gestorfinanceiro.api.model.Client;
+import com.gestorfinanceiro.api.model.Finance;
 import com.gestorfinanceiro.api.model.SystemMessage;
 import com.gestorfinanceiro.api.repo.ClientRepo;
+import com.gestorfinanceiro.api.repo.FinanceRepo;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +18,9 @@ import org.springframework.stereotype.Service;
 public class LoggedService {
 	@Autowired
 	private ClientRepo clientRepo;
+
+	@Autowired
+	private FinanceRepo financeRepo;
 
 	@Autowired
 	private SystemMessage message;
@@ -59,6 +68,22 @@ public class LoggedService {
 			message.setMessage("Email inválido");
 			return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
 		} else {
+
+			// Recuperar todas as finanças associadas ao cliente
+			Iterable<Finance> clientFinancesIterable = financeRepo.findAll();
+			List<Finance> clientFinances = new ArrayList<>();
+			clientFinancesIterable.forEach(clientFinances::add);
+			
+			// Verificar se há finanças associadas ao cliente
+			if (!clientFinances.isEmpty()) {
+				// Excluir todas as finanças associadas ao cliente
+				for (Finance finance : clientFinances) {
+					if(client.getId() == finance.getClientId()){
+						financeRepo.delete(finance);
+					}
+				}
+			}
+
 			clientRepo.delete(client);
 			message.setMessage("Pessoa removida");
 			return new ResponseEntity<>(message, HttpStatus.OK);

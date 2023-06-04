@@ -60,7 +60,7 @@ public class FinanceService {
 		}
 	}
 
-	//Delete Client
+	//Delete Finance
 	public ResponseEntity<?> deleteFinance(Finance finance) {
 		if (finance.getFinanceId() == 0 || finance.getClientId() == null) {
 			message.setMessage("Gasto/Ganho inválido");

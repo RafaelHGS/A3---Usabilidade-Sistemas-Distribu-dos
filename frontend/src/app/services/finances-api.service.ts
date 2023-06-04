@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { ProfileService } from './profile.service';
 import { ToastController } from '@ionic/angular';
+import { FinancesService } from './finances.service';
 import axios from 'axios';
 import urls from "src/assets/config/urls.json";
 
@@ -10,8 +10,8 @@ import urls from "src/assets/config/urls.json";
 })
 export class FinancesAPIService {
 
-	constructor(public profileService: ProfileService,
-					public toastController: ToastController) { }
+	constructor(public toastController: ToastController,
+				) { }
 
 	financeData = {
 		financeId: null,
@@ -20,7 +20,7 @@ export class FinancesAPIService {
 		clientId: 0,
 	};
 
-	async addFinance() {
+	public async addFinance() {
 		try {
 			const url = urls.addFinance;
 			const response = await axios.post(url, this.financeData);
@@ -30,7 +30,7 @@ export class FinancesAPIService {
 
 	}
 
-	async editFinance(finance: any) {
+	public async editFinance(finance: any) {
 		try {
 			const url = urls.editFinance;
 			const response = await axios.put(url, finance);
@@ -40,7 +40,7 @@ export class FinancesAPIService {
 
 	}
 
-	async getFinance() {
+	public async getFinance() {
 		try {
 			const url = urls.getFinance;
 			const response = await axios.get(url);
@@ -53,7 +53,7 @@ export class FinancesAPIService {
 	}
 
 
-	async deleteFinance(financeId: String){
+	public async deleteFinance(financeId: String){
 		try {
 			const url = urls.deleteFinance + String(financeId);
 			const response = await axios.delete(url);
@@ -64,7 +64,7 @@ export class FinancesAPIService {
 		}
 	}
 
-	async presentToast(msg: string) {
+	public async presentToast(msg: string) {
 		const toast = await this.toastController.create({
 			message: msg,
 			duration: 2500

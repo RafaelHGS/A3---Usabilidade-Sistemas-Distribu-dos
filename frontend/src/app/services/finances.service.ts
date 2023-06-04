@@ -7,22 +7,23 @@ import { ProfileService } from './profile.service';
   providedIn: 'root'
 })
 export class FinancesService {
-  private gastoGanhos: any[] = [];
-	saldo: number = 0;
+  	private financesArray: any[] = [];
+	totalBalance: number = 0;
 
 	constructor(public financeApi: FinancesAPIService, public profileService: ProfileService) { }
 
-	public async setGastoGanhos() {
+	public async setfinancesArray() {
 		try {
-			this.resetGastoGanho();
+			this.resetTotalBalance();
+			this.resetFinancesArray();
 			const financesData: any = await this.financeApi.getFinance();
 			for (let finance of financesData) {
 				if (finance.clientId === this.profileService.getUserId()) {
-					this.setSaldo(finance.financeValue);
-					this.gastoGanhos.push(finance);
+					this.setTotalBalance(finance.financeValue);
+					this.financesArray.push(finance);
 				}
 			}
-			this.setGastoGanhoToStorage();
+			this.setFinancesToStorage();
 		} catch (error: any) {
 			console.log(error)
 		}
@@ -37,92 +38,90 @@ export class FinancesService {
 					financesFromThisClient.push(finance);
 				}
 			}
-			this.gastoGanhos.push(financesFromThisClient[financesFromThisClient.length - 1]);
+			this.financesArray.push(financesFromThisClient[financesFromThisClient.length - 1]);
 		} catch (error: any) {
 			console.log(error)
 		}
 	}
 
-	public setSaldo(novaEntrada: number) {
-		this.saldo += novaEntrada;
+	public setTotalBalance(novaEntrada: number) {
+		this.totalBalance += novaEntrada;
 	}
 
-	public resetSaldo() {
-		this.saldo = 0;
+	public resetTotalBalance() {
+		this.totalBalance = 0;
 	}
 
-	public getGastoGanho(): any[] {
-		return this.gastoGanhos;
+	public getFinancesArray(): any[] {
+		return this.financesArray;
 	}
 
-	public resetGastoGanho() {
-		this.gastoGanhos = [];
-		this.clearStorage();
+	public resetFinancesArray() {
+		this.financesArray = [];
+		this.cleanStorage();
 	}
 
 
-	public async adicionarGastoGanho(nome: string, valor: number) {
+	public async addFinance(nome: string, valor: number) {
 		try {
 			this.financeApi.financeData.financeName = nome;
 			this.financeApi.financeData.financeValue = valor;
 			this.financeApi.financeData.clientId = this.profileService.getUserId();
 			await this.financeApi.addFinance();
 			this.pushLastFinance();
-			this.setSaldo(Number(valor));
-			this.setGastoGanhoToStorage();
+			this.setTotalBalance(Number(valor));
+			this.setFinancesToStorage();
 		} catch (error) {
 			console.error();
 		}
 	}
 
-	public limparGastoGanho(index: number, valor: number) {
-		this.financeApi.deleteFinance(this.gastoGanhos[index].financeId);
-		this.gastoGanhos.splice(index, 1);
-		this.setSaldo(valor * -1);
-		this.setGastoGanhoToStorage();
+	public cleanFinance(index: number, valor: number) {
+		this.financeApi.deleteFinance(this.financesArray[index].financeId);
+		this.financesArray.splice(index, 1);
+		this.setTotalBalance(valor * -1);
+		this.setFinancesToStorage();
 	}
 
-	public atualizarGastoGanho(index: number, nome: string, valor: number) {
-		let gastoGanho = this.gastoGanhos[index];
-		this.setSaldo(+gastoGanho.financeValue * -1)
+	public updateFinance(index: number, nome: string, valor: number) {
+		let gastoGanho = this.financesArray[index];
+		this.setTotalBalance(+gastoGanho.financeValue * -1)
 		gastoGanho.financeName = nome;
 		gastoGanho.financeValue = valor;
-		this.gastoGanhos.splice(index, 1, gastoGanho);
+		this.financesArray.splice(index, 1, gastoGanho);
 		this.financeApi.editFinance(gastoGanho);
-		this.setSaldo(valor);
-		this.setGastoGanhoToStorage();
+		this.setTotalBalance(valor);
+		this.setFinancesToStorage();
 
 	}
 
 
-	public async setGastoGanhoToStorage() {
+	public async setFinancesToStorage() {
 		await Preferences.set({
 			key: 'GastosGanhos',
-			value: JSON.stringify(this.gastoGanhos),
+			value: JSON.stringify(this.financesArray),
 		});
 
 	}
 
 
-	public async getGastoGanhoFromStorage() {
+	public async getFinancesArrayFromStorage() {
 		const resposta = await Preferences.get({ key: 'GastosGanhos' });
 		if (resposta !== null && typeof resposta.value === 'string') {
 			let auxGastosGanhos: any[] = JSON.parse(resposta.value);
-			// Restante da lógica com o array auxGastosGanhos
 			if (Array.isArray(auxGastosGanhos)) {
 				for (let i of auxGastosGanhos) {
-					let gastoGanho = { financeId: i.financeId, financeName: i.financeName, financeValue: i.financeValue, clientId: i.clientId };
-					this.gastoGanhos.push(gastoGanho);
-					this.setSaldo(gastoGanho.financeValue)
+					let finance = { financeId: i.financeId, financeName: i.financeName, financeValue: i.financeValue, clientId: i.clientId };
+					this.financesArray.push(finance);
+					this.setTotalBalance(finance.financeValue)
 				}
 			}
 		} else {
-			// Lidar com o caso em que o valor não está disponível ou não é uma string válida
 			console.error("Valor inválido ou não encontrado no storage.");
 		}
 	}
 
-	public async clearStorage() {
+	public async cleanStorage() {
 		try {
 			await Preferences.remove({ key: 'GastosGanhos' });
 		} catch (error: any) {

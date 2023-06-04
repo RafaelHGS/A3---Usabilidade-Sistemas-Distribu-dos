@@ -13,6 +13,7 @@ import { FinancesService } from '../services/finances.service';
 export class HomePage {
 	type: string = "ganho";
 
+	//Página Principal do aplicativo
 	constructor(
 		private alertController: AlertController,
 		public financesService: FinancesService,
@@ -22,27 +23,31 @@ export class HomePage {
 		public profileApi : ProfileService,
 	) { }
 
+	//Métodos para captura de finanças
 	ngOnInit() {
-		this.financesService.setGastoGanhos();
-		if(this.financesService.getGastoGanho() == null){
-			this.financesService.getGastoGanhoFromStorage();
+		this.financesService.setfinancesArray();
+		if(this.financesService.getFinancesArray == null){
+			this.financesService.getFinancesArrayFromStorage();
 		}
 	}
 
+	//Métodos para limpeza de finanças e perfil de usuário
 	logout() {
-		this.financesService.resetGastoGanho();
-		this.financesService.resetSaldo();
+		this.financesService.resetFinancesArray();
+		this.financesService.resetTotalBalance();
 		this.profileApi.resetProfile();
 		this.popoverController.dismiss().catch(error => console.error(error));
 		this.router.navigate(["login"]).catch(error => console.error(error));
 	}
 
+	//Método de navegação para profile
 	profile() {
 		this.popoverController.dismiss().catch(error => console.error(error));
 		this.router.navigate(["profile"]).catch(error => console.error(error));
 	}
 
-	async presentAlertPromptAdicionar() {
+	//Adição de finança
+	async presentAlertPromptAdd() {
 		const alert = await this.alertController.create({
 			header: "Novo Gasto/Ganho",
 			inputs: [
@@ -67,12 +72,11 @@ export class HomePage {
 				{
 					text: "Ok",
 					handler: (dadosAlert) => {
-						// const valor = parseFloat(dadosAlert.valor); // E preciso parsear o float do valor recebido no input(?)
 						if (dadosAlert.gastoGanho != "" && dadosAlert.gastoGanho != null)
-							this.financesService.adicionarGastoGanho(dadosAlert.gastoGanho, dadosAlert.valor);
+							this.financesService.addFinance(dadosAlert.gastoGanho, dadosAlert.valor);
 						else {
 							this.presentToast();
-							this.presentAlertPromptAdicionar();
+							this.presentAlertPromptAdd();
 						}
 					}
 				}
@@ -81,7 +85,8 @@ export class HomePage {
 		await alert.present();
 	}
 
-	async presentAlertPromptLimpar(index: number, valor: number) {
+	//Exclusão de Finança
+	async presentAlertPromptClean(index: number, valor: number) {
 		const alert = await this.alertController.create({
 			header: "Exclusão !!!",
 			message: 'Deseja Excluir essa Entrada/Saída ?',
@@ -91,14 +96,15 @@ export class HomePage {
 					role: "cancel",
 				}, {
 					text: "Excluir",
-					handler: () => this.financesService.limparGastoGanho(index, valor)
+					handler: () => this.financesService.cleanFinance(index, valor)
 				}
 			]
 		})
 		await alert.present();
 	}
 
-	async presentAlertPromptAtualizar(index: number, gastoGanho: any) {
+	//Atualização de finança
+	async presentAlertPromptUpdate(index: number, gastoGanho: any) {
 		const alert = await this.alertController.create({
 			header: "Alterar Campo",
 			inputs: [
@@ -127,10 +133,10 @@ export class HomePage {
 					handler: (dadosAlert) => {
 						const valor = parseFloat(dadosAlert.valor);
 						if (dadosAlert.gastoGanho != "" && !isNaN(valor)) {
-							this.financesService.atualizarGastoGanho(index, dadosAlert.gastoGanho, valor)
+							this.financesService.updateFinance(index, dadosAlert.gastoGanho, valor)
 						} else {
 							this.presentToast();
-							this.presentAlertPromptAtualizar(index, gastoGanho).catch(error => console.error(error));
+							this.presentAlertPromptUpdate(index, gastoGanho).catch(error => console.error(error));
 						}
 					}
 				}
@@ -139,14 +145,12 @@ export class HomePage {
 		await alert.present();
 	}
 
+	//Mensagem padrão de Erro
 	async presentToast() {
 		const toast = await this.toastController.create({
 			message: "Preencha os campos!",
 			duration: 2500
 		});
-
-		/* By awaiting the toast.present() promise, you ensure that the promise is
-		resolved or rejected before continuing the execution. -ChatGPT */
 		await toast.present();
 	}
 }

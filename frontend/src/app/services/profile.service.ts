@@ -1,8 +1,11 @@
 import { Injectable } from '@angular/core';
+import { Injector } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController, ToastController } from '@ionic/angular';
 import axios from 'axios';
 import urls from "src/assets/config/urls.json";
+import { FinancesAPIService } from './finances-api.service';
+import { FinancesService } from './finances.service';
 
 
 @Injectable({
@@ -11,8 +14,9 @@ import urls from "src/assets/config/urls.json";
 export class ProfileService {
 
 	constructor(public alertController: AlertController,
-					public toastController: ToastController,
-					public router: Router) { }
+				public toastController: ToastController,
+				public financeApi: FinancesAPIService,
+				public router: Router) { }
 
 	private email: string = "";
 	private username: string = "";
@@ -76,7 +80,7 @@ export class ProfileService {
 			return [];
 		}
 	}
-
+	
 
 	async presentAlertPromptEditProfile() {
 		const alert = await this.alertController.create({
