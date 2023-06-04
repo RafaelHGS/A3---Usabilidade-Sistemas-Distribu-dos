@@ -22,18 +22,18 @@ public class FinanceService {
 	public ResponseEntity<?> addFinance(Finance finance) {
 		if (finance == null) {
 			message.setMessage("Finança não definida");
-			return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);// verifica finanças
 		} else if (finance.getFinanceName() == "" || finance.getFinanceName() == null) {
 			message.setMessage("Preencha uma descricao da Financa");
-			return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);//verifica descrição
 		} else if (finance.getFinanceValue() == 0 || finance.getFinanceName() == null) {
 			message.setMessage("Preencha um valor");
-			return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);//verifica valor
 		} else if (finance.getClientId() == 0) {
-			message.setMessage("clientID inválido!");
+			message.setMessage("clientID inválido!");//confere ID
 			return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
 		} else {
-			message.setMessage("Finança Adicionada com Sucesso");
+			message.setMessage("Finança Adicionada com Sucesso");//mensagem de conferência
 			return new ResponseEntity<>(financeRepo.save(finance), HttpStatus.CREATED);
 		}
 	}
@@ -42,21 +42,21 @@ public class FinanceService {
 		Finance storedFinance = financeRepo.findByFinanceId(finance.getFinanceId());
 		if (storedFinance == null) {
 			message.setMessage("O Gasto/Ganho não existe");
-			return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);//confere inexistência
 		} else if (finance.getFinanceName().equals("") || finance.getFinanceName() == null) {
 			message.setMessage("Nome inválido para Gasto/Ganho");
-			return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);//confere nome inexistênte
 		} else if (finance.getFinanceValue() == 0) {
 			message.setMessage("Valor inválido para Gasto/Ganho");
-			return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);//confere valor inexistênte
 		} else if (finance.getClientId() == 0 || finance.getClientId() == null) {
 			message.setMessage("ID do Cliente não encontrado");
-			return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);//confere existência de Id
 		} else if (finance.getFinanceId() == 0 || finance.getFinanceId() == null) {
 			message.setMessage("Id do Gasto/Ganho não encontrado");
-			return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);// confere existência de gasto/ganho
 		} else {
-			return new ResponseEntity<>(financeRepo.save(finance), HttpStatus.OK);
+			return new ResponseEntity<>(financeRepo.save(finance), HttpStatus.OK);//confirmação
 		}
 	}
 

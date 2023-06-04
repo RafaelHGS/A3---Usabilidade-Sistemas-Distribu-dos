@@ -20,30 +20,30 @@ public class AuthService {
 	public ResponseEntity<?> signup(Client client) {
 		if (client.getName() == null || client.getName().equals("")) {
 			message.setMessage("Preencha um nome");
-			return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);//confere se nome n existe
 		} else if (client.getEmail().equals("") || client.getEmail() == null) {
 			message.setMessage("Preencha um nome de email");
-			return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);//confere se o email não existe
 		} else if (client.getPassword() == null || client.getPassword().equals("")) {
 			message.setMessage("A senha não pode ser vazia, preencha uma senha");
-			return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);//confere se a senha não existe
 		} else if (clientRepo.findByEmail(client.getEmail()) != null) {
 			message.setMessage("Usuário já existe");
-			return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST); // confere se usuario ja existe
 		} else {
 			clientRepo.save(client);
 			message.setMessage("Cadastro Realizado com Sucesso");
-			return new ResponseEntity<>(message, HttpStatus.CREATED);
+			return new ResponseEntity<>(message, HttpStatus.CREATED);//cadastra usuario
 		}
 	}
 
 	public ResponseEntity<?> login(Client client) {
 		Client storedClient = clientRepo.findByEmail(client.getEmail());
-		if (storedClient == null || !storedClient.getPassword().equals(client.getPassword())) {
+		if (storedClient == null || !storedClient.getPassword().equals(client.getPassword())) {//conferencia de user/senha de entrada
 			message.setMessage("Usuário/Senha Incorretos");
 			return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
 		} else {
-			message.setMessage("Usuário/Senha Incorretos");
+			message.setMessage("Usuário/Senha Incorretos"); // conferencia de user/senha de entrada
 			;
 			return new ResponseEntity<>(message, HttpStatus.OK);
 		}
