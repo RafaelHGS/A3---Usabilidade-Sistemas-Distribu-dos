@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
-import axios from 'axios';
 import { ProfileService } from './profile.service';
 import { ToastController } from '@ionic/angular';
+import axios from 'axios';
+import urls from "src/assets/config/urls.json";
+
 
 @Injectable({
 	providedIn: 'root'
@@ -20,7 +22,7 @@ export class FinancesAPIService {
 
 	async addFinance() {
 		try {
-			const url = "http://localhost:8080/finances/add";
+			const url = urls.addFinance;
 			const response = await axios.post(url, this.financeData);
 		} catch (error: any) {
 			this.presentToast(error.message.response);
@@ -30,7 +32,7 @@ export class FinancesAPIService {
 
 	async editFinance(finance: any) {
 		try {
-			const url = "http://localhost:8080/finances/edit";
+			const url = urls.editFinance;
 			const response = await axios.put(url, finance);
 		} catch (error: any) {
 			this.presentToast(error.message.response);
@@ -40,7 +42,7 @@ export class FinancesAPIService {
 
 	async getFinance() {
 		try {
-			const url = "http://localhost:8080/finances/list";
+			const url = urls.getFinance;
 			const response = await axios.get(url);
 
 			return response.data;
@@ -53,7 +55,7 @@ export class FinancesAPIService {
 
 	async deleteFinance(financeId: String){
 		try {
-			const url = "http://localhost:8080/finances/delete/" + String(financeId);
+			const url = urls.deleteFinance + String(financeId);
 			const response = await axios.delete(url);
 			
 			return response.data;

@@ -1,0 +1,11 @@
+{
+    "login": "http://localhost:8080/auth/login",
+    "signup": "http://localhost:8080/auth/signup",
+    "addFinance": "http://localhost:8080/finances/add",
+    "editFinance": "http://localhost:8080/finances/edit",
+    "getFinance": "http://localhost:8080/finances/list",
+    "deleteFinance": "http://localhost:8080/finances/delete/",
+    "setProfile": "http://localhost:8080/loggedUser/",
+    "editProfile": "http://localhost:8080/loggedUser/User",
+    "deleteProfile": "http://localhost:8080/loggedUser/delete/"
+  }

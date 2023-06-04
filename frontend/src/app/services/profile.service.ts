@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController, ToastController } from '@ionic/angular';
 import axios from 'axios';
+import urls from "src/assets/config/urls.json";
+
 
 @Injectable({
 	providedIn: 'root'
@@ -50,7 +52,7 @@ export class ProfileService {
 
 	async setProfile() {
 		try {
-			const url = "http://localhost:8080/loggedUser/" + this.getEmail();
+			const url = urls.setProfile + this.getEmail();
 			const response = await axios.get(url);
 			this.setUserId(response.data.id);
 			this.setUsername(response.data.name);
@@ -76,7 +78,7 @@ export class ProfileService {
 	}
 
 
-	async presentAlertPrompteditProfile() {
+	async presentAlertPromptEditProfile() {
 		const alert = await this.alertController.create({
 			header: "Alterar Dados",
 			inputs: [
@@ -123,7 +125,7 @@ export class ProfileService {
 								}
 
 
-								const url = "http://localhost:8080/loggedUser/User";
+								const url = urls.editProfile;
 								const response = await axios.put(url, userData);
 
 								this.setUsername(userData.name);
@@ -137,14 +139,14 @@ export class ProfileService {
 									duration: 2500
 								});
 								toast.present();
-								this.presentAlertPrompteditProfile();
+								this.presentAlertPromptEditProfile();
 
 							}
 						}
 						else {
 
 							this.presentToast();
-							this.presentAlertPrompteditProfile();
+							this.presentAlertPromptEditProfile();
 						}
 					}
 				}
@@ -167,7 +169,7 @@ export class ProfileService {
 					text: "Excluir",
 					handler: async () => {
 						try {
-							const url = "http://localhost:8080/loggedUser/delete/" + this.getEmail();
+							const url = urls.deleteProfile + this.getEmail();
 							const response = await axios.delete(url);
 
 							const toast = await this.toastController.create({

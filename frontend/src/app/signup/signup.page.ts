@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 import axios from 'axios';
+import urls from "src/assets/config/urls.json";
+
 
 @Component({
 	selector: 'app-signup',
@@ -30,7 +32,7 @@ export class SignupPage {
 
 	async signup() {
 		try {
-			const url = 'http://localhost:8080/auth/signup'; // Altere a URL conforme necessário
+			const url = urls.signup; // Altere a URL conforme necessário
 			const response = await axios.post(url, this.signupData)
 			this.router.navigate(["login"])
 		} catch (error: any) {

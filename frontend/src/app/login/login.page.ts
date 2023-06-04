@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import axios from 'axios';
 import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 import { ProfileService } from '../services/profile.service';
 import { FinancesAPIService } from '../services/finances-api.service';
+import axios from 'axios';
+import urls from "src/assets/config/urls.json";
 
 @Component({
   selector: 'app-login',
@@ -28,7 +29,7 @@ export class LoginPage implements OnInit {
 
   async login() {
     try {
-      const url= "http://localhost:8080/auth/login";
+      const url= urls.login;
       const response = await axios.post(url, this.loginData);
       this.profileService.setEmail(this.loginData.email);
       this.profileService.setProfile();
