@@ -27,7 +27,7 @@ export class HomePage {
 		public router: Router,
 	) { }
 
-	//Métodos para captura de finanças
+	//Métodos para captura e inicialização de finanças
 	ngOnInit() {
 		this.initFinances();
 	}
@@ -39,6 +39,7 @@ export class HomePage {
 		this.financesService.setfinancesArray();
 	}
 
+
 	//Métodos para limpeza de finanças e perfil de usuário
 	logout() {
 		this.financesService.resetFinancesArray();
@@ -48,11 +49,13 @@ export class HomePage {
 		this.router.navigate(["login"]).catch(error => console.error(error));
 	}
 
+
 	//Método de navegação para profile
 	profile() {
 		this.popoverController.dismiss().catch(error => console.error(error));
 		this.router.navigate(["profile"]).catch(error => console.error(error));
 	}
+
 
 	//Adição de finança
 	async presentAlertPromptAdd() {
@@ -93,6 +96,7 @@ export class HomePage {
 		await alert.present();
 	}
 
+
 	//Exclusão de Finança
 	async presentAlertPromptClean(index: number, valor: number) {
 		const alert = await this.alertController.create({
@@ -104,12 +108,20 @@ export class HomePage {
 					role: "cancel",
 				}, {
 					text: "Excluir",
-					handler: () => this.financesService.cleanFinance(index, valor)
+					handler: async () => {
+						this.financesService.cleanFinance(index, valor);
+						const toast = await this.toastController.create({
+							message: "Tarefa Excluída com Sucesso",
+							duration: 2500
+						});
+						await toast.present();
+					}
 				}
 			]
 		})
 		await alert.present();
 	}
+
 
 	//Atualização de finança
 	async presentAlertPromptUpdate(index: number, gastoGanho: any) {
@@ -153,6 +165,7 @@ export class HomePage {
 		await alert.present();
 	}
 
+	
 	//Mensagem padrão de Erro
 	async presentToast() {
 		const toast = await this.toastController.create({

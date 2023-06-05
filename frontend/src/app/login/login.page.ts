@@ -21,11 +21,13 @@ export class LoginPage implements OnInit {
               public financeApi : FinancesAPIService,
               public financeService : FinancesService) { }
 
+  //Garantindo limpeza de Storage/cache na inicialização do aplicativo
   ngOnInit() {
     this.profileService.resetProfile();
     this.profileService.cleanStorage();
     this.financeService.cleanStorage();
   }
+
 
   //Dados para Login
   loginData = {

@@ -17,6 +17,8 @@ export class ProfileService {
 				public financeApi: FinancesAPIService,
 				public router: Router) { }
 
+
+	//Atributos do Profile
 	private email: string = "";
 	private username: string = "";
 	private userId: number = 0;
@@ -53,6 +55,7 @@ export class ProfileService {
 	}
 
 
+	//Inicialização do profile
 	public async initProfile(){
 		const verifyProfile = Number(this.getUserId()); 
 		if(verifyProfile == 0){
@@ -61,7 +64,8 @@ export class ProfileService {
 	  }
 
 
-	async setProfile() {
+	//Definindo Profile
+	public async setProfile() {
 		try {
 			const url = urls.setProfile + this.getEmail();
 			const response = await axios.get(url);
@@ -75,6 +79,8 @@ export class ProfileService {
 		}
 	}
 
+
+	//Pegando informações de usuário e email
 	public getProfile() {
 		try {
 			const tempProfile: any[] = [
@@ -127,7 +133,8 @@ export class ProfileService {
 		}
 	}
 
-	async presentAlertPromptEditProfile() {
+	//Edição do Profile
+	public async presentAlertPromptEditProfile() {
 		const alert = await this.alertController.create({
 			header: "Alterar Dados",
 			inputs: [
@@ -206,6 +213,7 @@ export class ProfileService {
 	}
 
 
+	//Deletando usuário e finanças associadas
 	public async deleteProfile() {
 		const alert = await this.alertController.create({
 			header: "Exclusão !!!",

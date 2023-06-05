@@ -20,6 +20,8 @@ export class FinancesService {
   	private financesArray: any[] = [];
 	totalBalance: number = 0;
 
+
+	//Variaveis para definição de das finanças
 	financesAPI: any[] = [];
 	financesStorage: any[] = [];
 
@@ -66,6 +68,7 @@ export class FinancesService {
 	}
 
 
+	//Obtendo finanças da API
 	public async setFinancesAPI(){
 		const financesData: any = await this.financeApi.getFinance();
 
@@ -90,6 +93,7 @@ export class FinancesService {
 		}
 	}
 
+
 	//Criação e adição de finança atual no banco
 	public async addFinance(nome: string, valor: number) {
 		try {
@@ -104,6 +108,7 @@ export class FinancesService {
 			// console.error();
 		}
 	}
+
 
 	//Adição de finança atual na variável local
 	public async pushLastFinance() {
@@ -155,7 +160,7 @@ export class FinancesService {
 	}
 
 
-	//Captura de Storage local
+	//Obtendo finaças do Storage local
 	public async setFinancesArrayFromStorage() {
 		const resposta = await Preferences.get({ key: 'GastosGanhos' });
 		if (resposta !== null && typeof resposta.value === 'string') {
