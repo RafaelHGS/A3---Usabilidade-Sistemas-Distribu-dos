@@ -69,6 +69,7 @@ export class HomePage {
 				},
 				{
 					name: "valor",
+					placeholder: "Ex: 10, 100, -5, -20...",
 					type: "number",
 				}
 			],
@@ -137,6 +138,7 @@ export class HomePage {
 				{
 					name: "valor",
 					type: "number",
+					placeholder: "Novo Valor",
 					value: gastoGanho.valor
 				}
 			],

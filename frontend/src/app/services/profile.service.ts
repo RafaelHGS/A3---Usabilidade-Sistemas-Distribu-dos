@@ -186,6 +186,7 @@ export class ProfileService {
 
 								this.setUsername(userData.name);
 								this.setEmail(userData.email);
+								this.setProfile();
 
 							} catch (error: any) {
 								const aux = error.response.data.message;
