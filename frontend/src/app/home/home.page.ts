@@ -3,6 +3,9 @@ import { AlertController, ToastController, PopoverController } from '@ionic/angu
 import { Router } from '@angular/router';
 import { ProfileService } from '../services/profile.service';
 import { FinancesService } from '../services/finances.service';
+import { Preferences } from '@capacitor/preferences';
+import { FinancesAPIService } from '../services/finances-api.service';
+import { ProfilePage } from '../profile/profile.page';
 
 @Component({
 	selector: 'app-home',
@@ -19,23 +22,28 @@ export class HomePage {
 		public financesService: FinancesService,
 		public toastController: ToastController,
 		public popoverController: PopoverController,
+		public profileService : ProfileService,
+		public financeApi : FinancesAPIService,
 		public router: Router,
-		public profileApi : ProfileService,
 	) { }
 
 	//Métodos para captura de finanças
 	ngOnInit() {
+		this.initFinances();
+	}
+
+	public async initFinances(){
+		await this.profileService.initProfile();
+		await this.financesService.setFinancesAPI();
+		await this.financesService.setFinancesArrayFromStorage();
 		this.financesService.setfinancesArray();
-		if(this.financesService.getFinancesArray == null){
-			this.financesService.getFinancesArrayFromStorage();
-		}
 	}
 
 	//Métodos para limpeza de finanças e perfil de usuário
 	logout() {
 		this.financesService.resetFinancesArray();
 		this.financesService.resetTotalBalance();
-		this.profileApi.resetProfile();
+		this.profileService.resetProfile();
 		this.popoverController.dismiss().catch(error => console.error(error));
 		this.router.navigate(["login"]).catch(error => console.error(error));
 	}

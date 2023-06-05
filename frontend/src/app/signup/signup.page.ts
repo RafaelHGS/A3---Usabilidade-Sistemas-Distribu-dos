@@ -14,22 +14,15 @@ import urls from "src/assets/config/urls.json";
 export class SignupPage {
 	constructor(public router: Router, public toastController: ToastController) { }
 
-	private _errorMessage: string = '';
-
-	public getErrorMessage(): string {
-		return this._errorMessage;
-	}
-	public setErrorMessage(value: string) {
-		this._errorMessage = value;
-	}
-
-
+	//Dados para cadastro
 	signupData = {
 		name: '',
 		email: '',
 		password: ''
 	};
 
+
+	//Cadastro no banco de dados
 	async signup() {
 		try {
 			const url = urls.signup;

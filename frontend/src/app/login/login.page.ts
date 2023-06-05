@@ -5,6 +5,8 @@ import { ProfileService } from '../services/profile.service';
 import { FinancesAPIService } from '../services/finances-api.service';
 import axios from 'axios';
 import urls from "src/assets/config/urls.json";
+import { FinancesService } from '../services/finances.service';
+
 
 @Component({
   selector: 'app-login',
@@ -16,9 +18,13 @@ export class LoginPage implements OnInit {
   constructor(public profileService: ProfileService,
               public router: Router,
               public toastController : ToastController,
-              public financeApi : FinancesAPIService) { }
+              public financeApi : FinancesAPIService,
+              public financeService : FinancesService) { }
 
   ngOnInit() {
+    this.profileService.resetProfile();
+    this.profileService.cleanStorage();
+    this.financeService.cleanStorage();
   }
 
   //Dados para Login
@@ -34,7 +40,7 @@ export class LoginPage implements OnInit {
       const url= urls.login;   //Alterar URL, no arquivo de configuração, de acordo com sua aplicação
       const response = await axios.post(url, this.loginData);
       this.profileService.setEmail(this.loginData.email);
-      this.profileService.setProfile();
+      await this.profileService.setProfile();
       this.router.navigate(["home"])
       this.clearLogin();
       

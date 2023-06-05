@@ -7,43 +7,24 @@ import { ProfileService } from './profile.service';
   providedIn: 'root'
 })
 export class FinancesService {
+
+	constructor(public financeApi: FinancesAPIService,
+				public profileService: ProfileService,
+				) { }
+
+	ngOnInit(){
+		this.profileService.initProfile();
+	}
+	
+	//Atributos para Criação de lista de finanças e Saldo total
   	private financesArray: any[] = [];
 	totalBalance: number = 0;
 
-	constructor(public financeApi: FinancesAPIService, public profileService: ProfileService) { }
+	financesAPI: any[] = [];
+	financesStorage: any[] = [];
 
-	public async setfinancesArray() {
-		try {
-			this.resetTotalBalance();
-			this.resetFinancesArray();
-			const financesData: any = await this.financeApi.getFinance();
-			for (let finance of financesData) {
-				if (finance.clientId === this.profileService.getUserId()) {
-					this.setTotalBalance(finance.financeValue);
-					this.financesArray.push(finance);
-				}
-			}
-			this.setFinancesToStorage();
-		} catch (error: any) {
-			console.log(error)
-		}
-	}
-
-	public async pushLastFinance() {
-		try {
-			const financesData: any = await this.financeApi.getFinance();
-			const financesFromThisClient: any[] = [];
-			for (let finance of financesData) {
-				if (finance.clientId === this.profileService.getUserId()) {
-					financesFromThisClient.push(finance);
-				}
-			}
-			this.financesArray.push(financesFromThisClient[financesFromThisClient.length - 1]);
-		} catch (error: any) {
-			console.log(error)
-		}
-	}
-
+	
+	//Métodos de tratamento das variáveis locais
 	public setTotalBalance(novaEntrada: number) {
 		this.totalBalance += novaEntrada;
 	}
@@ -61,7 +42,55 @@ export class FinancesService {
 		this.cleanStorage();
 	}
 
+	//Captura das Finanças no Banco e adição na variável local
+	public async setfinancesArray() {
+		try {
+			this.resetTotalBalance();
+			this.resetFinancesArray();
 
+			if(this.financesAPI.length >= this.financesStorage.length){
+				for(let finance of this.financesAPI){
+					this.setTotalBalance(finance.financeValue);
+					this.financesArray.push(finance);
+				}
+				this.setFinancesToStorage();
+			}else{
+				for(let finance of this.financesStorage){
+					this.setTotalBalance(finance.financeValue);
+					this.financesArray.push(finance);
+				}
+			}
+		} catch (error: any) {
+			console.log(error)
+		}
+	}
+
+
+	public async setFinancesAPI(){
+		const financesData: any = await this.financeApi.getFinance();
+
+		if(this.profileService.getUserId() == 0){
+			let tempProfileId = 0;
+			const resposta = await Preferences.get({ key: 'Profile' });
+			if(resposta !== null && typeof resposta.value === 'string'){
+				const restoredProfile = await JSON.parse(resposta.value);
+				tempProfileId = restoredProfile[0].userId;
+			}
+			for (let finance of financesData) {
+				if (finance.clientId == tempProfileId) {
+					this.financesAPI.push(finance);
+				}
+			}
+		}else{
+			for (let finance of financesData) {
+				if (finance.clientId === this.profileService.getUserId()) {
+					this.financesAPI.push(finance);
+				}
+			}
+		}
+	}
+
+	//Criação e adição de finança atual no banco
 	public async addFinance(nome: string, valor: number) {
 		try {
 			this.financeApi.financeData.financeName = nome;
@@ -72,10 +101,28 @@ export class FinancesService {
 			this.setTotalBalance(Number(valor));
 			this.setFinancesToStorage();
 		} catch (error) {
-			console.error();
+			// console.error();
 		}
 	}
 
+	//Adição de finança atual na variável local
+	public async pushLastFinance() {
+		try {
+			const financesData: any = await this.financeApi.getFinance();
+			const financesFromThisClient: any[] = [];
+			for (let finance of financesData) {
+				if (finance.clientId === this.profileService.getUserId()) {
+					financesFromThisClient.push(finance);
+				}
+			}
+			this.financesArray.push(financesFromThisClient[financesFromThisClient.length - 1]);
+		} catch (error: any) {
+			// console.log(error)
+		}
+	}
+
+	
+	//Exclusão da finança selecionada
 	public cleanFinance(index: number, valor: number) {
 		this.financeApi.deleteFinance(this.financesArray[index].financeId);
 		this.financesArray.splice(index, 1);
@@ -83,6 +130,8 @@ export class FinancesService {
 		this.setFinancesToStorage();
 	}
 
+
+	//Edição da finança selecionada
 	public updateFinance(index: number, nome: string, valor: number) {
 		let gastoGanho = this.financesArray[index];
 		this.setTotalBalance(+gastoGanho.financeValue * -1)
@@ -96,6 +145,7 @@ export class FinancesService {
 	}
 
 
+	//Setando storage local
 	public async setFinancesToStorage() {
 		await Preferences.set({
 			key: 'GastosGanhos',
@@ -105,15 +155,16 @@ export class FinancesService {
 	}
 
 
-	public async getFinancesArrayFromStorage() {
+	//Captura de Storage local
+	public async setFinancesArrayFromStorage() {
 		const resposta = await Preferences.get({ key: 'GastosGanhos' });
 		if (resposta !== null && typeof resposta.value === 'string') {
 			let auxGastosGanhos: any[] = JSON.parse(resposta.value);
 			if (Array.isArray(auxGastosGanhos)) {
 				for (let i of auxGastosGanhos) {
 					let finance = { financeId: i.financeId, financeName: i.financeName, financeValue: i.financeValue, clientId: i.clientId };
-					this.financesArray.push(finance);
-					this.setTotalBalance(finance.financeValue)
+					this.financesStorage.push(finance);
+					// this.setTotalBalance(finance.financeValue)
 				}
 			}
 		} else {
@@ -121,6 +172,8 @@ export class FinancesService {
 		}
 	}
 
+
+	//Limpeza do Storage Local
 	public async cleanStorage() {
 		try {
 			await Preferences.remove({ key: 'GastosGanhos' });
@@ -129,6 +182,7 @@ export class FinancesService {
 		}
 	}
 
+	//Tratamento para definir um gasto e ganho
 	public confereValor(valor: number): boolean {
 		return valor >= 0;
 	}

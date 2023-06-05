@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Injector } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController, ToastController } from '@ionic/angular';
+import { FinancesAPIService } from './finances-api.service';
+import { Preferences } from '@capacitor/preferences';
 import axios from 'axios';
 import urls from "src/assets/config/urls.json";
-import { FinancesAPIService } from './finances-api.service';
-import { FinancesService } from './finances.service';
 
 
 @Injectable({
@@ -47,24 +46,32 @@ export class ProfileService {
 		return this.userId;
 	}
 
-
 	public resetProfile(){
 		this.email = "";
 		this.username = "";
-		this.userId = 0;
+		this.cleanStorage();
 	}
+
+
+	public async initProfile(){
+		const verifyProfile = Number(this.getUserId()); 
+		if(verifyProfile == 0){
+			this.getProfileFromStorage();
+		}
+	  }
+
 
 	async setProfile() {
 		try {
 			const url = urls.setProfile + this.getEmail();
 			const response = await axios.get(url);
-			this.setUserId(response.data.id);
 			this.setUsername(response.data.name);
+			this.setUserId(response.data.id),
+			this.setProfiletoStorage()
 
 		} catch (error: any) {
-
-			const aux = error.response.data.message;
-			console.error(aux);
+			// const aux = error.response.data.message;
+			// console.error(aux);
 		}
 	}
 
@@ -76,11 +83,49 @@ export class ProfileService {
 			];
 			return tempProfile;
 		} catch (error: any) {
-			console.error(error);
+			// console.error(error);
 			return [];
 		}
 	}
 	
+
+	//Setando Perfil ao storage Local
+	public async setProfiletoStorage() {
+		const tempProfile: any[] = [{
+			"email" : this.getEmail(),
+			"username": this.getUsername(),
+			"userId": this.getUserId(),
+		}
+		]
+		await Preferences.set({
+			key: 'Profile',
+			value: JSON.stringify(tempProfile),
+		});
+
+	}
+	
+	//Captura de Perfil
+	public async getProfileFromStorage(){
+		const resposta = await Preferences.get({ key: 'Profile' });
+		if(resposta !== null && typeof resposta.value === 'string'){
+			const restoredProfile = await JSON.parse(resposta.value);
+			this.setEmail(restoredProfile[0].email);
+			this.setUsername(restoredProfile[0].username);
+			await this.setUserId(restoredProfile[0].userId);
+		}
+		else{
+			console.error("Profile Não definido no Storage")
+		}
+	}
+
+	//Limpeza do Storage Local
+	public async cleanStorage() {
+		try {
+			await Preferences.remove({ key: 'Profile' });
+		} catch (error: any) {
+			console.error('Erro ao limpar o storage:', error);
+		}
+	}
 
 	async presentAlertPromptEditProfile() {
 		const alert = await this.alertController.create({
@@ -185,7 +230,7 @@ export class ProfileService {
 							this.router.navigate(["login"]);
 
 						} catch (error) {
-							console.error(error);
+							// console.error(error);
 						}
 					}
 				}

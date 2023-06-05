@@ -1,11 +1,11 @@
 {
-    "login": "http://localhost:8080/auth/login",
-    "signup": "http://localhost:8080/auth/signup",
-    "addFinance": "http://localhost:8080/finances/add",
-    "editFinance": "http://localhost:8080/finances/edit",
-    "getFinance": "http://localhost:8080/finances/list",
-    "deleteFinance": "http://localhost:8080/finances/delete/",
-    "setProfile": "http://localhost:8080/loggedUser/",
-    "editProfile": "http://localhost:8080/loggedUser/User",
-    "deleteProfile": "http://localhost:8080/loggedUser/delete/"
-  }
+  "login": "https://lonely-wind-production.up.railway.app/auth/login",
+  "signup": "https://lonely-wind-production.up.railway.app/auth/signup",
+  "addFinance": "https://lonely-wind-production.up.railway.app/finances/add",
+  "editFinance": "https://lonely-wind-production.up.railway.app/finances/edit",
+  "getFinance": "https://lonely-wind-production.up.railway.app:/finances/list",
+  "deleteFinance": "https://lonely-wind-production.up.railway.app/finances/delete/",
+  "setProfile": "https://lonely-wind-production.up.railway.app/loggedUser/",
+  "editProfile": "https://lonely-wind-production.up.railway.app/loggedUser/User",
+  "deleteProfile": "https://lonely-wind-production.up.railway.app/loggedUser/delete/"
+}

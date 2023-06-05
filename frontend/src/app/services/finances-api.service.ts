@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { ToastController } from '@ionic/angular';
-import { FinancesService } from './finances.service';
 import axios from 'axios';
 import urls from "src/assets/config/urls.json";
 
@@ -13,6 +12,8 @@ export class FinancesAPIService {
 	constructor(public toastController: ToastController,
 				) { }
 
+
+	//Dados para adição de uma finança
 	financeData = {
 		financeId: null,
 		financeName: '',
@@ -20,6 +21,9 @@ export class FinancesAPIService {
 		clientId: 0,
 	};
 
+
+	//Para todos os métodos, substituir a URL no arquivo de configuração com a url adequada
+	//Método de adição de finança
 	public async addFinance() {
 		try {
 			const url = urls.addFinance;
@@ -30,6 +34,8 @@ export class FinancesAPIService {
 
 	}
 
+
+	//Método de adição de finança
 	public async editFinance(finance: any) {
 		try {
 			const url = urls.editFinance;
@@ -40,6 +46,7 @@ export class FinancesAPIService {
 
 	}
 
+	//Método para extrair finanças do banco
 	public async getFinance() {
 		try {
 			const url = urls.getFinance;
@@ -53,6 +60,7 @@ export class FinancesAPIService {
 	}
 
 
+	//Método de Exclusão de finança
 	public async deleteFinance(financeId: String){
 		try {
 			const url = urls.deleteFinance + String(financeId);
@@ -64,6 +72,7 @@ export class FinancesAPIService {
 		}
 	}
 
+	
 	public async presentToast(msg: string) {
 		const toast = await this.toastController.create({
 			message: msg,
