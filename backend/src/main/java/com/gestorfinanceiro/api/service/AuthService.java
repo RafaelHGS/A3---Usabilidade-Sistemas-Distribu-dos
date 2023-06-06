@@ -43,8 +43,7 @@ public class AuthService {
 			message.setMessage("Usuário/Senha Incorretos");
 			return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
 		} else {
-			message.setMessage("Usuário/Senha Incorretos"); // conferencia de user/senha de entrada
-			;
+			message.setMessage("Usuário Logado com Sucesso"); // conferencia de user/senha de entrada
 			return new ResponseEntity<>(message, HttpStatus.OK);
 		}
 	}
