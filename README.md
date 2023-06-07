@@ -31,7 +31,8 @@ npm -i
 ### \_Páginas da Aplicação\_
   A Aplicação consiste em 4 páginas e com pré-configuração pelo ionic, são elas:
 
-![image](https://github.com/RafaelHGS/A3---Usabilidade-Sistemas-Distribu-dos/assets/89417905/7364483f-8710-41a3-a876-3bacb2246c08)
+![image](https://github.com/RafaelHGS/A3---Usabilidade-Sistemas-Distribu-dos/assets/89417905/1e3ab451-dbad-4e44-b6d3-dbeb0f2fb626)
+![image](https://github.com/RafaelHGS/A3---Usabilidade-Sistemas-Distribu-dos/assets/89417905/118f909e-2a9c-44c0-808b-c17432abe49f)
 - Home: Página principal da aplicação na qual o usuráio vê e manipula seus gastos
 - Login: Página inicial da aplicação, aqui temos a validação de login e redirecionamento para página de cadastro adequada
 - Signup: Página responsável pelo cadastro de usuário
