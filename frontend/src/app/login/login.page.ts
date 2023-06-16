@@ -7,14 +7,13 @@ import axios from 'axios';
 import urls from "src/assets/config/urls.json";
 import { FinancesService } from '../services/finances.service';
 
-
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
 })
-export class LoginPage implements OnInit {
 
+export class LoginPage implements OnInit {
   constructor(public profileService: ProfileService,
               public router: Router,
               public toastController : ToastController,
@@ -27,7 +26,6 @@ export class LoginPage implements OnInit {
     this.profileService.cleanStorage();
     this.financeService.cleanStorage();
   }
-
 
   //Dados para Login
   loginData = {
@@ -71,7 +69,4 @@ export class LoginPage implements OnInit {
     });
     toast.present();
   }
-
-
 }
-

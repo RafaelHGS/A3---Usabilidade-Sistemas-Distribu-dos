@@ -39,7 +39,6 @@ export class HomePage {
 		this.financesService.setfinancesArray();
 	}
 
-
 	//Métodos para limpeza de finanças e perfil de usuário
 	logout() {
 		this.financesService.resetFinancesArray();
@@ -49,13 +48,11 @@ export class HomePage {
 		this.router.navigate(["login"]).catch(error => console.error(error));
 	}
 
-
 	//Método de navegação para profile
 	profile() {
 		this.popoverController.dismiss().catch(error => console.error(error));
 		this.router.navigate(["profile"]).catch(error => console.error(error));
 	}
-
 
 	//Adição de finança
 	async presentAlertPromptAdd() {
@@ -84,7 +81,7 @@ export class HomePage {
 				{
 					text: "Ok",
 					handler: (dadosAlert) => {
-						if (dadosAlert.gastoGanho != "" && dadosAlert.gastoGanho != null)
+						if (dadosAlert.gastoGanho !== "" && dadosAlert.gastoGanho != null)
 							this.financesService.addFinance(dadosAlert.gastoGanho, dadosAlert.valor);
 						else {
 							this.presentToast();
@@ -96,7 +93,6 @@ export class HomePage {
 		})
 		await alert.present();
 	}
-
 
 	//Exclusão de Finança
 	async presentAlertPromptClean(index: number, valor: number) {
@@ -122,7 +118,6 @@ export class HomePage {
 		})
 		await alert.present();
 	}
-
 
 	//Atualização de finança
 	async presentAlertPromptUpdate(index: number, gastoGanho: any) {
@@ -154,7 +149,7 @@ export class HomePage {
 					text: "Salvar",
 					handler: (dadosAlert) => {
 						const valor = parseFloat(dadosAlert.valor);
-						if (dadosAlert.gastoGanho != "" && !isNaN(valor)) {
+						if (dadosAlert.gastoGanho !== "" && !isNaN(valor)) {
 							this.financesService.updateFinance(index, dadosAlert.gastoGanho, valor)
 						} else {
 							this.presentToast();
@@ -167,7 +162,6 @@ export class HomePage {
 		await alert.present();
 	}
 
-	
 	//Mensagem padrão de Erro
 	async presentToast() {
 		const toast = await this.toastController.create({

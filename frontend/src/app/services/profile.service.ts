@@ -1,17 +1,17 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController, ToastController } from '@ionic/angular';
-import { FinancesAPIService } from './finances-api.service';
 import { Preferences } from '@capacitor/preferences';
 import axios from 'axios';
-import urls from "src/assets/config/urls.json";
 
+import { FinancesAPIService } from './finances-api.service';
+import urls from "src/assets/config/urls.json";
 
 @Injectable({
 	providedIn: 'root'
 })
-export class ProfileService {
 
+export class ProfileService {
 	constructor(public alertController: AlertController,
 				public toastController: ToastController,
 				public financeApi: FinancesAPIService,
@@ -30,7 +30,6 @@ export class ProfileService {
 	public getEmail() {
 		return this.email;
 	}
-
 
 	public setUsername(username: string) {
 		this.username = username;
@@ -54,15 +53,13 @@ export class ProfileService {
 		this.cleanStorage();
 	}
 
-
 	//Inicialização do profile
 	public async initProfile(){
-		const verifyProfile = Number(this.getUserId()); 
-		if(verifyProfile == 0){
+		const verifyProfile = this.getUserId(); 
+		if(verifyProfile === 0){
 			this.getProfileFromStorage();
 		}
 	  }
-
 
 	//Definindo Profile
 	public async setProfile() {
@@ -72,13 +69,11 @@ export class ProfileService {
 			this.setUsername(response.data.name);
 			this.setUserId(response.data.id),
 			this.setProfiletoStorage()
-
 		} catch (error: any) {
 			// const aux = error.response.data.message;
 			// console.error(aux);
 		}
 	}
-
 
 	//Pegando informações de usuário e email
 	public getProfile() {
@@ -93,7 +88,6 @@ export class ProfileService {
 			return [];
 		}
 	}
-	
 
 	//Setando Perfil ao storage Local
 	public async setProfiletoStorage() {
@@ -101,13 +95,11 @@ export class ProfileService {
 			"email" : this.getEmail(),
 			"username": this.getUsername(),
 			"userId": this.getUserId(),
-		}
-		]
+		}]
 		await Preferences.set({
 			key: 'Profile',
 			value: JSON.stringify(tempProfile),
 		});
-
 	}
 	
 	//Captura de Perfil
@@ -118,8 +110,7 @@ export class ProfileService {
 			this.setEmail(restoredProfile[0].email);
 			this.setUsername(restoredProfile[0].username);
 			await this.setUserId(restoredProfile[0].userId);
-		}
-		else{
+		} else {
 			console.error("Profile Não definido no Storage")
 		}
 	}
@@ -164,7 +155,7 @@ export class ProfileService {
 				}, {
 					text: "Alterar",
 					handler: async (dadosAlert) => {
-						if (dadosAlert.name != "") {
+						if (dadosAlert.name !== "") {
 							try {
 								const userData = {
 									id: this.getUserId(),
@@ -180,14 +171,12 @@ export class ProfileService {
 									userData.password = null;
 								}
 
-
 								const url = urls.editProfile;
 								const response = await axios.put(url, userData);
 
 								this.setUsername(userData.name);
 								this.setEmail(userData.email);
 								this.setProfile();
-
 							} catch (error: any) {
 								const aux = error.response.data.message;
 
@@ -197,11 +186,8 @@ export class ProfileService {
 								});
 								toast.present();
 								this.presentAlertPromptEditProfile();
-
 							}
-						}
-						else {
-
+						} else {
 							this.presentToast();
 							this.presentAlertPromptEditProfile();
 						}
@@ -210,9 +196,7 @@ export class ProfileService {
 			]
 		})
 		await alert.present();
-
 	}
-
 
 	//Deletando usuário e finanças associadas
 	public async deleteProfile() {
@@ -237,7 +221,6 @@ export class ProfileService {
 							toast.present();
 
 							this.router.navigate(["login"]);
-
 						} catch (error) {
 							// console.error(error);
 						}
@@ -246,11 +229,7 @@ export class ProfileService {
 			]
 		})
 		await alert.present();
-
-
-
 	}
-
 
 	async presentToast() {
 		const toast = await this.toastController.create({
@@ -259,6 +238,4 @@ export class ProfileService {
 		});
 		toast.present();
 	}
-
-
 }

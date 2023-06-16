@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Preferences } from '@capacitor/preferences';
+
 import { FinancesAPIService } from './finances-api.service';
 import { ProfileService } from './profile.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class FinancesService {
 
+export class FinancesService {
 	constructor(public financeApi: FinancesAPIService,
 				public profileService: ProfileService,
 				) { }
@@ -20,12 +21,10 @@ export class FinancesService {
   	private financesArray: any[] = [];
 	totalBalance: number = 0;
 
-
 	//Variaveis para definição de das finanças
 	financesAPI: any[] = [];
 	financesStorage: any[] = [];
 
-	
 	//Métodos de tratamento das variáveis locais
 	public setTotalBalance(novaEntrada: number) {
 		this.totalBalance += novaEntrada;
@@ -67,12 +66,11 @@ export class FinancesService {
 		}
 	}
 
-
 	//Obtendo finanças da API
 	public async setFinancesAPI(){
 		const financesData: any = await this.financeApi.getFinance();
 
-		if(this.profileService.getUserId() == 0){
+		if(this.profileService.getUserId() === 0){
 			let tempProfileId = 0;
 			const resposta = await Preferences.get({ key: 'Profile' });
 			if(resposta !== null && typeof resposta.value === 'string'){
@@ -80,7 +78,7 @@ export class FinancesService {
 				tempProfileId = restoredProfile[0].userId;
 			}
 			for (let finance of financesData) {
-				if (finance.clientId == tempProfileId) {
+				if (finance.clientId === tempProfileId) {
 					this.financesAPI.push(finance);
 				}
 			}
@@ -93,7 +91,6 @@ export class FinancesService {
 		}
 	}
 
-
 	//Criação e adição de finança atual no banco
 	public async addFinance(nome: string, valor: number) {
 		try {
@@ -102,13 +99,12 @@ export class FinancesService {
 			this.financeApi.financeData.clientId = this.profileService.getUserId();
 			await this.financeApi.addFinance();
 			this.pushLastFinance();
-			this.setTotalBalance(Number(valor));
+			this.setTotalBalance(valor);
 			this.setFinancesToStorage();
 		} catch (error) {
 			// console.error();
 		}
 	}
-
 
 	//Adição de finança atual na variável local
 	public async pushLastFinance() {
@@ -126,7 +122,6 @@ export class FinancesService {
 		}
 	}
 
-	
 	//Exclusão da finança selecionada
 	public cleanFinance(index: number, valor: number) {
 		this.financeApi.deleteFinance(this.financesArray[index].financeId);
@@ -134,7 +129,6 @@ export class FinancesService {
 		this.setTotalBalance(valor * -1);
 		this.setFinancesToStorage();
 	}
-
 
 	//Edição da finança selecionada
 	public updateFinance(index: number, nome: string, valor: number) {
@@ -149,7 +143,6 @@ export class FinancesService {
 
 	}
 
-
 	//Setando storage local
 	public async setFinancesToStorage() {
 		await Preferences.set({
@@ -158,7 +151,6 @@ export class FinancesService {
 		});
 
 	}
-
 
 	//Obtendo finaças do Storage local
 	public async setFinancesArrayFromStorage() {
@@ -176,7 +168,6 @@ export class FinancesService {
 			console.error("Valor inválido ou não encontrado no storage.");
 		}
 	}
-
 
 	//Limpeza do Storage Local
 	public async cleanStorage() {

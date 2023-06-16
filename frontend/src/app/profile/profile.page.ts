@@ -6,14 +6,12 @@ import { ProfileService } from '../services/profile.service';
   templateUrl: './profile.page.html',
   styleUrls: ['./profile.page.scss'],
 })
-export class ProfilePage implements OnInit {
 
+export class ProfilePage implements OnInit {
   constructor(public profileService: ProfileService) { }
 
   ngOnInit() {
     //Captura de Perfil
     this.profileService.initProfile();
   }
-
-
 }

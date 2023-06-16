@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 import axios from 'axios';
-import urls from "src/assets/config/urls.json";
 
+import urls from "src/assets/config/urls.json";
 
 @Component({
 	selector: 'app-signup',
@@ -20,7 +20,6 @@ export class SignupPage {
 		email: '',
 		password: ''
 	};
-
 
 	//Cadastro no banco de dados
 	async signup() {
