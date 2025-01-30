@@ -1,6 +1,9 @@
 # Projeto A3 para Sistemas Distribuídos e Usabilidade
   Para Projeto de A3 para as matérias de Sistemas Sistribuídos Mobile, Usabilidade Desenvolvimento web/mobile/jogos, nosso grupo decidiu realizar um projeto de um gestor financeiro simples, o gestor consiste em duas seções, a parte de Back-end que será a parte para Sistemas Distribuídos, consistindo em uma API Rest que gerenciará um banco de dados e tratamento de dados da aplicação E a parte de Front-End que será a parte para a matéria de Usabilidade, feita com Ionic Angular para a UserInterface e consumo da API criada no back-end.
 
+Site Para Teste: [https://a3-sistemasdistribuidostest.netlify.app/login](https://a3-sistemasdistribuidostest.netlify.app/login)
+Deploy gratuito: Netlify para Host do site, Aiven para o Banco de dados MySql e o Render para hospedagem da api
+
 ## Front-End
   Na pasta de Front-end se encontra toda a aplicação para a matéria de "Usabilidade, Desenvolimento web, mobile e jogos", ela consiste em uma aplicação feita com Ionic Angular e tem como principal aspecto gerenciar tudo aquilo que o usuário vê, além de consumir a API criada para o projeto.
   
