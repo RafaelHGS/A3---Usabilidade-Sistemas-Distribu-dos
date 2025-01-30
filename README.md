@@ -7,7 +7,7 @@ Este projeto consiste em um **Gestor Financeiro Simples**, dividido em:
 - **Back-End**: API REST desenvolvida em **Java com Spring Boot**, responsável pelo gerenciamento de dados e comunicação com o banco.
 - **Front-End**: Aplicação **Ionic Angular**, responsável pela interface do usuário e consumo da API.
 
-🌍 **Testar o Projeto**: [Acesse o site](https://a3-sistemasdistribuidostest.netlify.app/login)
+🌍 **Testar o Projeto**: [Acesse o site](https://a3-sistemasdistribuidostest.netlify.app)
 🚀 **Deploy**: 
 - **Netlify**: Hospedagem do Front-End
 - **Aiven**: Banco de dados MySQL
